@@ -1,5 +1,6 @@
 // Funciona como um client que se conecta no banco
 import pg, { Query } from 'pg'
+import 'dotenv/config'
 
 const { Pool } = pg
 

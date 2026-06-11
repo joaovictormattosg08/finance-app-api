@@ -1,8 +1,19 @@
 import 'dotenv/config.js'
 import express from 'express'
+import { CreateUserController } from './src/controllers/create-user.js'
 
 const app = express()
 
-// 3000: Porta que será usada para acessar o projeto
-app.listen(3000, () => console.log('listening on port 3000'))
+app.use(express.json())
 
+app.post('/api/users', async (request, response) => {
+    const createUserController = new CreateUserController()
+    const { statusCode, body } = await createUserController.execute(request)
+
+    response.status(statusCode).json(body)
+})
+
+// 3000: Porta que será usada para acessar o projeto
+app.listen(process.env.PORT, () =>
+    console.log(`Listening on port ${process.env.PORT}`),
+)
