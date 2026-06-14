@@ -27,3 +27,10 @@ export const sucess = (body) => {
         body,
     }
 }
+
+export const notFound = (body) => {
+    return {
+        statusCode: 404,
+        body,
+    }
+}
