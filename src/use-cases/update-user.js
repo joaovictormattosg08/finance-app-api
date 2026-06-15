@@ -5,37 +5,38 @@ import { PostgresUpdateUserRepository } from '../repositories/postgres/update-us
 
 export class UpdateUserUseCase {
     async execute(userId, updateUserParams) {
-        const postgresGetUserByEmailRepository =
-            new PostgresGetUserByEmailRepository()
+        if (updateUserParams.email) {
+            const postgresGetUserByEmailRepository =
+                new PostgresGetUserByEmailRepository()
 
-        const userWithProvidedEmail =
-            await postgresGetUserByEmailRepository.execute(
-                updateUserParams.email,
-            )
+            const userWithProvidedEmail =
+                await postgresGetUserByEmailRepository.execute(
+                    updateUserParams.email,
+                )
 
-        if (userWithProvidedEmail) {
-            throw new EmailAlreadyInUseError(createUserParams.email)
+            if (userWithProvidedEmail) {
+                throw new EmailAlreadyInUseError(updateUserParams.email)
+            }
         }
 
-        const user = {
-            ...updateUserParams
-        }
+        const user = { ...updateUserParams }
 
         if (updateUserParams.password) {
             const hashedPassword = await bcrypt.hash(
                 updateUserParams.password,
                 10,
             )
-            user.password = hashedPassword 
+
+            user.password = hashedPassword
         }
 
         const postgresUpdateUserRepository = new PostgresUpdateUserRepository()
 
-        const updateUser = await postgresUpdateUserRepository.execute(
+        const updatedUser = await postgresUpdateUserRepository.execute(
             userId,
-            user
-        ),
+            user,
+        )
 
-        return updateUser
+        return updatedUser
     }
 }
