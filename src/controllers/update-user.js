@@ -1,26 +1,32 @@
 import validator from 'validator'
-import { badRequest, serverError, sucess } from './helpers/statusCode.js'
-import { UpdateUserUseCase } from '../use-cases/update-user.js'
+import { UpdateUserUseCase } from '../use-cases/index.js'
 import { EmailAlreadyInUseError } from '../errors/user.js'
 import {
     checkIfPasswordIsValid,
-    emailAlreadyInUseResponse,
+    invalidEmailResponse,
     invalidIdResponse,
     invalidPasswordResponse,
-} from './helpers/user.js'
+    checkIfIdIsValid,
+    checkIfEmailIsValid,
+    badRequest,
+    serverError,
+    sucess,
+} from './helpers/index.js'
 
 export class UpdateUserController {
     async execute(httpRequest) {
         try {
+            const params = httpRequest.body
+
             const userId = httpRequest.params.userId
 
-            const isIdValid = validator.isUUID(httpRequest.params.userId)
+            console.log(httpRequest.params.userId)
+
+            const isIdValid = checkIfIdIsValid(httpRequest.params.userId)
 
             if (!isIdValid) {
                 return invalidIdResponse()
             }
-
-            const params = httpRequest.body
 
             const allowedFields = [
                 'first_name',
@@ -40,12 +46,10 @@ export class UpdateUserController {
             }
 
             if (params.password) {
-                const passwordIsValid = checkIfPasswordIsValid(
-                    params.password,
-                )
+                const passwordIsValid = checkIfPasswordIsValid(params.password)
 
                 if (!passwordIsValid) {
-                    return invalidPasswordResponse()
+                    return invalidPasswordResponse(params.password)
                 }
             }
 
@@ -53,16 +57,13 @@ export class UpdateUserController {
                 const emailIsValid = checkIfEmailIsValid(params.email)
 
                 if (!emailIsValid) {
-                    return emailAlreadyInUseResponse()
+                    return invalidEmailResponse(params.email)
                 }
             }
 
             const updateUserUseCase = new UpdateUserUseCase()
 
-            const updatedUser = await updateUserUseCase.execute(
-                userId,
-                params,
-            )
+            const updatedUser = await updateUserUseCase.execute(userId, params)
 
             return sucess(updatedUser)
         } catch (error) {

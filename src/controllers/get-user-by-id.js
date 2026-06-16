@@ -1,18 +1,21 @@
 import { request } from 'express'
-import { GetUserByIdUseCase } from '../use-cases/get-user-by-id.js'
+import { GetUserByIdUseCase } from '../use-cases/index.js'
+import validator from 'validator'
 import {
+    checkIfIdIsValid,
+    invalidIdResponse,
     badRequest,
     notFound,
     serverError,
     sucess,
-} from './helpers/statusCode.js'
-import validator from 'validator'
-import { invalidIdResponse } from './helpers/user.js'
+} from './helpers/index.js'
 
 export class GetUserByIdController {
     async execute(httpRequest) {
         try {
-            const isIdValid = validator.isUUID(httpRequest.params.userId)
+            const params = httpRequest.body
+
+            const isIdValid = checkIfIdIsValid(httpRequest.params.userId)
 
             if (!isIdValid) {
                 return invalidIdResponse()

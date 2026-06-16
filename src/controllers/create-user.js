@@ -1,13 +1,16 @@
-import { CreateUserUseCase } from '../use-cases/create-user.js'
+import { CreateUserUseCase } from '../use-cases/index.js'
 import validator from 'validator'
-import { badRequest, created, serverError } from './helpers/statusCode.js'
+import {} from './helpers/http.js'
 import { EmailAlreadyInUseError } from '../errors/user.js'
 import {
     checkIfEmailIsValid,
     checkIfPasswordIsValid,
-    emailAlreadyInUseResponse,
+    invalidEmailResponse,
     invalidPasswordResponse,
-} from './helpers/user.js'
+    badRequest,
+    created,
+    serverError,
+} from './helpers/index.js'
 
 export class CreateUserController {
     async execute(httpRequest) {
@@ -33,13 +36,13 @@ export class CreateUserController {
             const passwordIsValid = checkIfPasswordIsValid(params.password)
 
             if (!passwordIsValid) {
-                return invalidPasswordResponse()
+                return invalidPasswordResponse(params.password)
             }
 
             const emailIsValid = checkIfEmailIsValid(params.email)
 
             if (!emailIsValid) {
-                return emailAlreadyInUseResponse()
+                return invalidEmailResponse(params.email)
             }
             // chamar o use case
             const createUserUseCase = new CreateUserUseCase()
