@@ -1,11 +1,7 @@
 import { DeleteUserUseCase } from '../use-cases/index.js'
 import { sucess } from './helpers/http.js'
-import {
-    checkIfIdIsValid,
-    invalidIdResponse,
-    notFound,
-    serverError,
-} from './index.js'
+import { notFound, serverError } from './helpers/http.js'
+import { checkIfIdIsValid, invalidIdResponse } from './helpers/user.js'
 
 export class DeleteUserController {
     async execute(httpRequest) {
@@ -19,9 +15,11 @@ export class DeleteUserController {
                 return invalidIdResponse()
             }
 
-            const deleteUserUseCase = DeleteUserUseCase()
+            const deletedUserUseCase = new DeleteUserUseCase()
 
-            const deletedUser = await deleteUserUseCase.execute(userId)
+            console.log(userId)
+
+            const deletedUser = await deletedUserUseCase.execute(userId)
 
             return sucess(deletedUser)
         } catch (error) {
