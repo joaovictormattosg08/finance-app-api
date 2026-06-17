@@ -4,7 +4,7 @@ export class DeleteUserUseCase {
     async execute(userId) {
         const postgresDeleteUserRepository = new PostgresDeleteUserRepository()
 
-        const deletedUser = postgresDeleteUserRepository.execute()
+        const deletedUser = await postgresDeleteUserRepository.execute()
 
         return deletedUser
     }
