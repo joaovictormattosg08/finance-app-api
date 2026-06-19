@@ -14,6 +14,10 @@ import {
 } from './helpers/index.js'
 
 export class UpdateUserController {
+    constructor(UpdateUserUseCase) {
+        this.UpdateUserUseCase = UpdateUserUseCase
+    }
+
     async execute(httpRequest) {
         try {
             const params = httpRequest.body
@@ -61,9 +65,10 @@ export class UpdateUserController {
                 }
             }
 
-            const updateUserUseCase = new UpdateUserUseCase()
-
-            const updatedUser = await updateUserUseCase.execute(userId, params)
+            const updatedUser = await this.UpdateUserUseCase.execute(
+                userId,
+                params,
+            )
 
             return sucess(updatedUser)
         } catch (error) {

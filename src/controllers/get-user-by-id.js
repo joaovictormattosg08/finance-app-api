@@ -1,5 +1,4 @@
 import { request } from 'express'
-import { GetUserByIdUseCase } from '../use-cases/index.js'
 import validator from 'validator'
 import {
     checkIfIdIsValid,
@@ -11,6 +10,10 @@ import {
 } from './helpers/index.js'
 
 export class GetUserByIdController {
+    constructor(GetUserByIdUseCase) {
+        this.GetUserByIdUseCase = GetUserByIdUseCase
+    }
+
     async execute(httpRequest) {
         try {
             const params = httpRequest.body
@@ -21,9 +24,7 @@ export class GetUserByIdController {
                 return invalidIdResponse()
             }
 
-            const getUserByIdUseCase = new GetUserByIdUseCase()
-
-            const user = await getUserByIdUseCase.execute(
+            const user = await this.GetUserByIdUseCase.execute(
                 httpRequest.params.userId,
             )
 
