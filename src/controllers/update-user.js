@@ -1,6 +1,6 @@
 import validator from 'validator'
 import { UpdateUserUseCase } from '../use-cases/index.js'
-import { EmailAlreadyInUseError } from '../errors/user.js'
+import { EmailAlreadyInUseError, UserNotFoundError } from '../errors/user.js'
 import {
     checkIfPasswordIsValid,
     invalidEmailResponse,
@@ -23,8 +23,6 @@ export class UpdateUserController {
             const params = httpRequest.body
 
             const userId = httpRequest.params.userId
-
-            console.log(httpRequest.params.userId)
 
             const isIdValid = checkIfIdIsValid(httpRequest.params.userId)
 
@@ -73,6 +71,10 @@ export class UpdateUserController {
             return sucess(updatedUser)
         } catch (error) {
             if (error instanceof EmailAlreadyInUseError) {
+                return badRequest({ message: error.message })
+            }
+
+            if (error instanceof UserNotFoundError) {
                 return badRequest({ message: error.message })
             }
 
