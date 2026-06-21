@@ -1,8 +1,8 @@
-import { DeleteUserUseCase } from '../use-cases/index.js'
-import { sucess } from './helpers/http.js'
-import { notFound, serverError, badRequest } from './helpers/http.js'
-import { checkIfIdIsValid, invalidIdResponse } from './helpers/user.js'
-import { UserNotFoundError } from '../errors/user.js'
+import { DeleteUserUseCase } from '../../use-cases/index.js'
+import { sucess } from '../helpers/http.js'
+import { notFound, serverError, badRequest } from '../helpers/http.js'
+import { checkIfIdIsValid, invalidIdResponse } from '../helpers/user.js'
+import { UserNotFoundError } from '../../errors/user.js'
 
 export class DeleteUserController {
     constructor(DeleteUserUseCase) {
