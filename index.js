@@ -47,6 +47,8 @@ app.delete('/api/users/:userId', async (request, response) => {
 
     response.status(statusCode).json(body)
 })
+
+app.post
 // 3000: Porta que será usada para acessar o projeto
 app.listen(process.env.PORT, () =>
     console.log(`Listening on port ${process.env.PORT}`),
