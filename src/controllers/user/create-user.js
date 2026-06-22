@@ -27,8 +27,6 @@ export class CreateUserController {
                 'password',
             ]
 
-            console.log(params)
-
             // For que acessa cada um dos campos do create user definidos acima
             for (const field of requiredFields) {
                 if (!params[field] || params[field].trim().length == 0) {
