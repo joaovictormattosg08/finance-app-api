@@ -13,14 +13,10 @@ export const invalidEmailResponse = () => {
     })
 }
 
-export const invalidIdResponse = () => {
-    return badRequest({
-        message: 'the provided id is not valid',
-    })
-}
+
 
 export const checkIfPasswordIsValid = (password) => password.length > 7
 
 export const checkIfEmailIsValid = (email) => validator.isEmail(email)
 
-export const checkIfIdIsValid = (userId) => validator.isUUID(userId)
+
