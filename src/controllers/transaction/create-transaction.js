@@ -3,7 +3,8 @@ import {
     badRequest,
     checkIfIdIsValid,
     invalidIdResponse,
-} from '../helpers'
+    sucess,
+} from '../helpers/index.js'
 import validator from 'validator'
 
 export class CreateTransactionController {
@@ -15,18 +16,14 @@ export class CreateTransactionController {
         try {
             const params = httpRequest.body
 
-            const requiredFields = [
-                'id',
-                'user_id',
-                'name',
-                'date',
-                'amount',
-                'type',
-            ]
+            const requiredFields = ['user_id', 'name', 'date', 'amount', 'type']
 
             // For que acessa cada um dos campos do create user definidos acima
             for (const field of requiredFields) {
-                if (!params[field] || params[field].trim().length == 0) {
+                if (
+                    !params[field] ||
+                    params[field].toString().trim().length == 0
+                ) {
                     return badRequest({ message: `Missing params: ${field}` })
                 }
             }
@@ -60,15 +57,13 @@ export class CreateTransactionController {
 
             const type = params.type.trim().toUpperCase()
 
-            const typeIsValid = ![
-                'EARNING',
-                'EXPENSE',
-                'INVESTMENT'.includes(type),
-            ]
+            const typeIsValid = ['EARNING', 'EXPENSE', 'INVESTMENT'].includes(
+                type,
+            )
 
             if (!typeIsValid) {
                 return badRequest({
-                    message: 'The type must be EARNING,EXPENSE OR INVESTMENT.',
+                    message: 'The type must be EARNING, EXPENSE or INVESTMENT.',
                 })
             }
 
@@ -76,6 +71,8 @@ export class CreateTransactionController {
                 ...params,
                 type,
             })
+
+            return sucess(transaction)
         } catch (error) {
             console.error(error)
             return serverError()
