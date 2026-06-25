@@ -6,6 +6,8 @@ import {
     requiredFieldIsMissingResponse,
 } from '../helpers/validation.js'
 
+import { UserNotFoundError } from '../../errors/user.js'
+
 export class GetTransactionByUserIdController {
     constructor(GetTransactionByUserIdUseCase) {
         this.GetTransactionByUserIdUseCase = GetTransactionByUserIdUseCase
