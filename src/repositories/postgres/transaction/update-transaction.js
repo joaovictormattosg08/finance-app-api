@@ -10,7 +10,7 @@ export class PostgresUpdateTransactionRepository {
             updateValues.push(updateTransactionParams[key])
         })
 
-        updateValues.push(userId)
+        updateValues.push(transactionId)
 
         const updateQuery = `
                UPDATE transactions
