@@ -1,0 +1,33 @@
+import {
+    checkIfIdIsValid,
+    invalidIdResponse,
+    serverError,
+    sucess,
+} from '../helpers/index.js'
+
+export class DeleteTransactionController {
+    constructor(DeleteTransactionUseCase) {
+        this.DeleteTransactionUseCase = DeleteTransactionUseCase
+    }
+
+    async execute(httpRequest) {
+        try {
+            const params = httpRequest.body
+
+            const idIsValid = checkIfIdIsValid(httpRequest.params.transactionId)
+
+            if (!idIsValid) {
+                return invalidIdResponse()
+            }
+
+            const transaction = await this.DeleteTransactionUseCase.execute(
+                httpRequest.params.transactionId,
+            )
+
+            return sucess(transaction)
+        } catch (error) {
+            console.error(error)
+            return serverError()
+        }
+    }
+}
