@@ -13,7 +13,6 @@ export class GetUserBalanceController {
     }
     async execute(httpRequest) {
         try {
-            const params = httpRequest.body
             const userId = httpRequest.params.userId
 
             const idIsValid = checkIfIdIsValid(userId)
@@ -21,8 +20,7 @@ export class GetUserBalanceController {
             if (!idIsValid) {
                 return invalidIdResponse()
             }
-
-            const balance = this.GetUserBalanceUseCase.execute(userId)
+            const balance = await this.GetUserBalanceUseCase.execute({ userId })
 
             return sucess(balance)
         } catch (error) {
