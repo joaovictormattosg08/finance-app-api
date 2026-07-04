@@ -1,17 +1,8 @@
 import validator from 'validator'
-import {} from '../helpers/http.js'
 import { EmailAlreadyInUseError } from '../../errors/user.js'
-import {
-    checkIfEmailIsValid,
-    checkIfPasswordIsValid,
-    invalidEmailResponse,
-    invalidPasswordResponse,
-    badRequest,
-    created,
-    serverError,
-    validateRequiredFields,
-    requiredFieldIsMissingResponse,
-} from '../helpers/index.js'
+import { createUserSchema } from '../../schemas/user.js'
+import { badRequest, created, serverError } from '../helpers/index.js'
+import { ZodError } from 'zod'
 
 export class CreateUserController {
     constructor(CreateUserUseCase) {
@@ -22,31 +13,8 @@ export class CreateUserController {
         try {
             const params = httpRequest.body
             //Validar a requisição (campos obrigatórios e tamanho de senha, email)
-            const requiredFields = [
-                'first_name',
-                'last_name',
-                'email',
-                'password',
-            ]
 
-            const { ok: requireFieldsWereProvided, missingField } =
-                validateRequiredFields(params, requiredFields)
-
-            if (!requireFieldsWereProvided) {
-                return requiredFieldIsMissingResponse(missingField)
-            }
-
-            const passwordIsValid = checkIfPasswordIsValid(params.password)
-
-            if (!passwordIsValid) {
-                return invalidPasswordResponse(params.password)
-            }
-
-            const emailIsValid = checkIfEmailIsValid(params.email)
-
-            if (!emailIsValid) {
-                return invalidEmailResponse(params.email)
-            }
+            await createUserSchema.parseAsync(params)
             // chamar o use case
 
             const createdUser = await this.CreateUserUseCase.execute(params)
@@ -54,6 +22,12 @@ export class CreateUserController {
 
             return created({ message: createdUser })
         } catch (error) {
+            if (error instanceof ZodError) {
+                return badRequest({
+                    message: error.issues[0].message,
+                })
+            }
+
             if (error instanceof EmailAlreadyInUseError) {
                 return badRequest({ message: error.message })
             }
