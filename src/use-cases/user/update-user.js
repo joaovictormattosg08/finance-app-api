@@ -17,7 +17,6 @@ export class UpdateUserUseCase {
     }
 
     async execute(userId, updateUserParams) {
-        console.log(this.PostgresGetUserByIdRepository)
         if (updateUserParams.email) {
             const userWithProvidedEmail =
                 await this.PostgresGetUserByEmailRepository.execute(

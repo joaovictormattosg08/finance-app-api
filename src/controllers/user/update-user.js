@@ -1,17 +1,15 @@
 import validator from 'validator'
+import { updateUserSchema } from '../../schemas/user.js'
 import { UpdateUserUseCase } from '../../use-cases/index.js'
 import { EmailAlreadyInUseError, UserNotFoundError } from '../../errors/user.js'
 import {
-    checkIfPasswordIsValid,
-    invalidEmailResponse,
     invalidIdResponse,
-    invalidPasswordResponse,
     checkIfIdIsValid,
-    checkIfEmailIsValid,
     badRequest,
     serverError,
     sucess,
 } from '../helpers/index.js'
+import { ZodError } from 'zod'
 
 export class UpdateUserController {
     constructor(UpdateUserUseCase) {
@@ -30,38 +28,7 @@ export class UpdateUserController {
                 return invalidIdResponse()
             }
 
-            const allowedFields = [
-                'first_name',
-                'last_name',
-                'email',
-                'password',
-            ]
-
-            const someFieldIsNotAllowed = Object.keys(params).some(
-                (field) => !allowedFields.includes(field),
-            )
-
-            if (someFieldIsNotAllowed) {
-                return badRequest({
-                    message: 'Some provided field is not allowed',
-                })
-            }
-
-            if (params.password) {
-                const passwordIsValid = checkIfPasswordIsValid(params.password)
-
-                if (!passwordIsValid) {
-                    return invalidPasswordResponse(params.password)
-                }
-            }
-
-            if (params.email) {
-                const emailIsValid = checkIfEmailIsValid(params.email)
-
-                if (!emailIsValid) {
-                    return invalidEmailResponse(params.email)
-                }
-            }
+            await updateUserSchema.parseAsync(params)
 
             const updatedUser = await this.UpdateUserUseCase.execute(
                 userId,
@@ -70,6 +37,12 @@ export class UpdateUserController {
 
             return sucess(updatedUser)
         } catch (error) {
+            console.log(error)
+            if (error instanceof ZodError) {
+                return badRequest({
+                    message: error.issues[0].message,
+                })
+            }
             if (error instanceof EmailAlreadyInUseError) {
                 return badRequest({ message: error.message })
             }
@@ -79,7 +52,6 @@ export class UpdateUserController {
             }
 
             return serverError()
-            console.log(error)
         }
     }
 }
