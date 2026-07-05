@@ -4,3 +4,4 @@ node_modules
 .postgres-data
 #Postgres volume
 .env
+/src/generated/prisma
