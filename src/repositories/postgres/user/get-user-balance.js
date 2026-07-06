@@ -1,5 +1,5 @@
+import { Prisma } from '@prisma/client'
 import { prisma } from '../../../../prisma/prisma.js'
-import { PostgresHelper } from '../../../db/postgres/helper.js'
 
 export class PostgresGetUserBalanceRepository {
     async execute(userId) {
@@ -39,12 +39,17 @@ export class PostgresGetUserBalanceRepository {
             },
         })
 
-        const balance = totalEarnings - totalExpenses - totalInvestments
+        const _totalEarnings = totalEarnings || new Prisma.Decimal(0)
+        const _totalExpenses = totalExpenses || new Prisma.Decimal(0)
+        const _totalInvestments = totalInvestments || new Prisma.Decimal(0)
 
+        const balance = new Prisma.Decimal(
+            totalEarnings - totalExpenses - totalInvestments,
+        )
         return {
-            totalEarnings,
-            totalExpenses,
-            totalInvestments,
+            earnings: _totalEarnings,
+            expenses: _totalExpenses,
+            investments: _totalInvestments,
             balance,
         }
     }
