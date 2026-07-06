@@ -41,6 +41,11 @@ export class PostgresGetUserBalanceRepository {
 
         const balance = totalEarnings - totalExpenses - totalInvestments
 
-        return balance
+        return {
+            totalEarnings,
+            totalExpenses,
+            totalInvestments,
+            balance,
+        }
     }
 }
