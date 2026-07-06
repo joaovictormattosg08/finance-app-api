@@ -49,7 +49,7 @@ app.patch('/api/users/:userId', async (request, response) => {
     response.status(statusCode).json(body)
 })
 app.delete('/api/users/:userId', async (request, response) => {
-    const deleteUserController = makeDeleteUserControler()
+    const deleteUserController = makeDeleteUserController()
 
     const { statusCode, body } = await deleteUserController.execute(request)
 
