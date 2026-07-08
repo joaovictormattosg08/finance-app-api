@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { CreateUserController } from './create-user'
+import { EmailAlreadyInUseError } from '../../errors/user'
 
 describe('Create User Controller', () => {
     class CreateUserUseCaseStub {
@@ -187,5 +188,28 @@ describe('Create User Controller', () => {
         //assert
 
         expect(result.statusCode).toBe(500)
+    })
+
+    it('should return 500 if CreateUserUseCase throws Email Already in use', async () => {
+        //arrange
+        const createUserUseCase = new CreateUserUseCaseStub()
+        const createUserController = new CreateUserController(createUserUseCase)
+
+        const httpRequest = {
+            body: {
+                first_name: faker.person.firstName(),
+                last_name: faker.person.lastName(),
+                email: faker.internet.email(),
+                password: '123456',
+            },
+        }
+        jest.spyOn(createUserUseCase, 'execute').mockImplementationOnce(() => {
+            throw new EmailAlreadyInUseError(httpRequest.body.email)
+        })
+        //act
+        const result = await createUserController.execute(httpRequest)
+
+        //assert
+        expect(result.statusCode).toBe(400)
     })
 })
