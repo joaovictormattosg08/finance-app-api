@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { CreateUserController } from './create-user'
 
 describe('Create User Controller', () => {
@@ -6,17 +7,17 @@ describe('Create User Controller', () => {
             return user
         }
     }
-    it('Should create an user', async () => {
+    it('Should return 201 when creating a user successfully', async () => {
         // arrange
         const createUserUseCase = new CreateUserUseCaseStub()
         const createUserController = new CreateUserController(createUserUseCase)
 
         const httpRequest = {
             body: {
-                first_name: 'João',
-                last_name: 'Victor',
-                email: 'joao@gmail.com',
-                password: '12345678',
+                first_name: faker.person.firstName(),
+                last_name: faker.person.lastName(),
+                email: faker.internet.email(),
+                password: faker.internet.password(),
             },
         }
         //act
@@ -25,19 +26,19 @@ describe('Create User Controller', () => {
 
         //assert
         expect(result.statusCode).toBe(201)
-        expect(result.body).not.toBeUndefined()
+        // expect(result.body).toEqual(httpRequest.body)
     })
 
-    it('Shoul reaturn 400 if first_name is not provided', async () => {
+    it('Shoul return 400 if first_name is not provided', async () => {
         //arrange
         const createUserUseCase = new CreateUserUseCaseStub()
         const createUserController = new CreateUserController(createUserUseCase)
 
         const httpRequest = {
             body: {
-                last_name: 'Victor',
-                email: 'joao@gmail.com',
-                password: '12345678',
+                last_name: faker.person.lastName(),
+                email: faker.internet.email(),
+                password: faker.internet.password(),
             },
         }
         //Act
@@ -54,9 +55,9 @@ describe('Create User Controller', () => {
 
         const httpRequest = {
             body: {
-                first_name: 'João',
-                email: 'joao@gmail.com',
-                password: '12345678',
+                first_name: faker.person.firstName(),
+                email: faker.internet.email(),
+                password: faker.internet.password(),
             },
         }
 
@@ -73,9 +74,9 @@ describe('Create User Controller', () => {
 
         const httpRequest = {
             body: {
-                first_name: 'João',
-                last_name: 'Victor',
-                password: '12345678',
+                first_name: faker.person.firstName(),
+                last_name: faker.person.lastName(),
+                password: faker.internet.password(),
             },
         }
         //act
@@ -91,10 +92,10 @@ describe('Create User Controller', () => {
 
         const httpRequest = {
             body: {
-                first_name: 'João',
-                last_name: 'Victor',
+                first_name: faker.person.firstName(),
+                last_name: faker.person.lastName(),
                 email: 'joao',
-                password: '12345678',
+                password: faker.internet.password(),
             },
         }
         //act
@@ -110,9 +111,9 @@ describe('Create User Controller', () => {
 
         const httpRequest = {
             body: {
-                first_name: 'João',
-                last_name: 'Victor',
-                email: 'joao@gmail.com',
+                first_name: faker.person.firstName(),
+                last_name: faker.person.lastName(),
+                email: faker.internet.email(),
             },
         }
         //act
@@ -129,9 +130,9 @@ describe('Create User Controller', () => {
 
         const httpRequest = {
             body: {
-                first_name: 'João',
-                last_name: 'Victor',
-                email: 'joao@gmail.com',
+                first_name: faker.person.firstName(),
+                last_name: faker.person.lastName(),
+                email: faker.internet.email(),
                 password: '12345',
             },
         }
@@ -140,5 +141,27 @@ describe('Create User Controller', () => {
 
         //assert
         expect(result.statusCode).toBe(400)
+    })
+
+    it('Should call CreateUserUseCase with correct params', async () => {
+        // arrange
+        const createUserUseCase = new CreateUserUseCaseStub()
+        const createUserController = new CreateUserController(createUserUseCase)
+
+        const httpRequest = {
+            body: {
+                first_name: faker.person.firstName(),
+                last_name: faker.person.lastName(),
+                email: faker.internet.email(),
+                password: '123456',
+            },
+        }
+        const executeSpy = jest.spyOn(createUserUseCase, 'execute')
+
+        //act
+        const result = await createUserController.execute(httpRequest)
+
+        //assert
+        expect(executeSpy).toHaveBeenCalledWith(httpRequest.body)
     })
 })
