@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { CreateUserController } from './create-user'
 import { EmailAlreadyInUseError } from '../../errors/user'
+import { email } from 'zod'
 
 describe('Create User Controller', () => {
     class CreateUserUseCaseStub {
@@ -17,18 +18,18 @@ describe('Create User Controller', () => {
         return { createUserUseCase, sut }
     }
 
+    const httpRequest = {
+        body: {
+            first_name: faker.person.firstName(),
+            last_name: faker.person.lastName(),
+            email: faker.internet.email(),
+            password: faker.internet.password(),
+        },
+    }
+
     it('Should return 201 when creating a user successfully', async () => {
         // arrange
         const { sut } = makeSut()
-
-        const httpRequest = {
-            body: {
-                first_name: faker.person.firstName(),
-                last_name: faker.person.lastName(),
-                email: faker.internet.email(),
-                password: faker.internet.password(),
-            },
-        }
         //act
 
         const result = await sut.execute(httpRequest)
@@ -42,15 +43,13 @@ describe('Create User Controller', () => {
         //arrange
         const { sut } = makeSut()
 
-        const httpRequest = {
-            body: {
-                last_name: faker.person.lastName(),
-                email: faker.internet.email(),
-                password: faker.internet.password(),
-            },
-        }
         //Act
-        const result = await sut.execute(httpRequest)
+        const result = await sut.execute({
+            body: {
+                ...httpRequest.body,
+                first_name: undefined,
+            },
+        })
 
         //Assert
         expect(result.statusCode).toBe(400)
@@ -60,16 +59,13 @@ describe('Create User Controller', () => {
         //arrange
         const { sut } = makeSut()
 
-        const httpRequest = {
-            body: {
-                first_name: faker.person.firstName(),
-                email: faker.internet.email(),
-                password: faker.internet.password(),
-            },
-        }
-
         //act
-        const result = await sut.execute(httpRequest)
+        const result = await sut.execute({
+            body: {
+                ...httpRequest.body,
+                last_name: undefined,
+            },
+        })
 
         //Assert
         expect(result.statusCode).toBe(400)
@@ -79,15 +75,13 @@ describe('Create User Controller', () => {
         const createUserUseCase = new CreateUserUseCaseStub()
         const { sut } = makeSut()
 
-        const httpRequest = {
-            body: {
-                first_name: faker.person.firstName(),
-                last_name: faker.person.lastName(),
-                password: faker.internet.password(),
-            },
-        }
         //act
-        const result = await sut.execute(httpRequest)
+        const result = await sut.execute({
+            body: {
+                ...httpRequest.body,
+                email: undefined,
+            },
+        })
 
         //Assert
         expect(result.statusCode).toBe(400)
@@ -96,16 +90,13 @@ describe('Create User Controller', () => {
         //arrange
         const { sut } = makeSut()
 
-        const httpRequest = {
-            body: {
-                first_name: faker.person.firstName(),
-                last_name: faker.person.lastName(),
-                email: 'joao',
-                password: faker.internet.password(),
-            },
-        }
         //act
-        const result = await sut.execute(httpRequest)
+        const result = await sut.execute({
+            body: {
+                ...httpRequest.body,
+                email: 'invalid_email',
+            },
+        })
 
         //Assert
         expect(result.statusCode).toBe(400)
@@ -114,15 +105,13 @@ describe('Create User Controller', () => {
         //arrange
         const { sut } = makeSut()
 
-        const httpRequest = {
-            body: {
-                first_name: faker.person.firstName(),
-                last_name: faker.person.lastName(),
-                email: faker.internet.email(),
-            },
-        }
         //act
-        const result = await sut.execute(httpRequest)
+        const result = await sut.execute({
+            body: {
+                ...httpRequest.body,
+                password: undefined,
+            },
+        })
 
         //assert
         expect(result.statusCode).toBe(400)
@@ -132,16 +121,15 @@ describe('Create User Controller', () => {
         //arrange
         const { sut } = makeSut()
 
-        const httpRequest = {
-            body: {
-                first_name: faker.person.firstName(),
-                last_name: faker.person.lastName(),
-                email: faker.internet.email(),
-                password: '12345',
-            },
-        }
         //act
-        const result = await sut.execute(httpRequest)
+        const result = await sut.execute({
+            body: {
+                ...httpRequest.body,
+                password: faker.internet.password({
+                    length: 5,
+                }),
+            },
+        })
 
         //assert
         expect(result.statusCode).toBe(400)
@@ -151,14 +139,6 @@ describe('Create User Controller', () => {
         // arrange
         const { sut, createUserUseCase } = makeSut()
 
-        const httpRequest = {
-            body: {
-                first_name: faker.person.firstName(),
-                last_name: faker.person.lastName(),
-                email: faker.internet.email(),
-                password: '123456',
-            },
-        }
         const executeSpy = jest.spyOn(createUserUseCase, 'execute')
 
         //act
@@ -171,14 +151,6 @@ describe('Create User Controller', () => {
     it('should return 500 if CreateUserUseCase throws', async () => {
         const { sut, createUserUseCase } = makeSut()
         //arrange
-        const httpRequest = {
-            body: {
-                first_name: faker.person.firstName(),
-                last_name: faker.person.lastName(),
-                email: faker.internet.email(),
-                password: faker.internet.password(),
-            },
-        }
 
         jest.spyOn(createUserUseCase, 'execute').mockImplementationOnce(() => {
             throw new Error()
@@ -195,14 +167,6 @@ describe('Create User Controller', () => {
         //arrange
         const { sut, createUserUseCase } = makeSut()
 
-        const httpRequest = {
-            body: {
-                first_name: faker.person.firstName(),
-                last_name: faker.person.lastName(),
-                email: faker.internet.email(),
-                password: '123456',
-            },
-        }
         jest.spyOn(createUserUseCase, 'execute').mockImplementationOnce(() => {
             throw new EmailAlreadyInUseError(httpRequest.body.email)
         })
