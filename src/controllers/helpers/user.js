@@ -14,7 +14,7 @@ export const invalidEmailResponse = () => {
 }
 
 export const userNotFoundResponse = () => {
-    notFound({ message: 'User not found' })
+    return notFound({ message: 'User not found' })
 }
 
 export const checkIfPasswordIsValid = (password) => password.length > 7
