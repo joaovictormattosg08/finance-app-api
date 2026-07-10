@@ -28,4 +28,16 @@ describe('GetUserBalanceController', () => {
 
         expect(httpResponse.statusCode).toBe(200)
     })
+
+    it('Should return 400 when user id is invalid', async () => {
+        const { sut } = makeSut()
+
+        const result = await sut.execute({
+            params: {
+                userId: 'Invalid user id',
+            },
+        })
+
+        expect(result.statusCode).toBe(400)
+    })
 })
