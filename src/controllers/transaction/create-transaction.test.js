@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { CreateTransactionController } from './create-transaction.js'
 import { fa } from 'zod/locales'
+import { date } from 'zod'
 
 describe('CreateTransactionController', () => {
     class CreateTransactionUseCaseStub {
@@ -93,6 +94,19 @@ describe('CreateTransactionController', () => {
             body: {
                 ...httpRequest,
                 type: undefined,
+            },
+        })
+
+        expect(result.statusCode).toBe(400)
+    })
+
+    it('should return 400 if the provided date is not valid', async () => {
+        const { sut } = makeSut()
+
+        const result = await sut.execute({
+            body: {
+                ...httpRequest,
+                date: 'data_errada',
             },
         })
 
