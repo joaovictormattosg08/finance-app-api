@@ -23,14 +23,32 @@ describe('CreateTransactionController', () => {
             user_id: faker.string.uuid(),
             date: faker.date.anytime().toISOString(),
             amount: Number(faker.finance.amount()),
-            type: faker.random,
+            type: 'EARNING',
         },
     }
 
-    it('should return 201 when creating transaction successfully', async () => {
+    it('should return 201 when creating transaction successfully (EARNING)', async () => {
         const { sut } = makeSut()
 
-        const result = await sut.execute(httpRequest)
+        const result = await sut.execute({
+            body: {
+                ...httpRequest.body,
+                type: 'EARNING',
+            },
+        })
+
+        expect(result.statusCode).toBe(201)
+    })
+
+    it('should return 201 when creating transaction successfully (EXPENSE)', async () => {
+        const { sut } = makeSut()
+
+        const result = await sut.execute({
+            body: {
+                ...httpRequest.body,
+                type: 'INVESTMENT',
+            },
+        })
 
         expect(result.statusCode).toBe(201)
     })
@@ -112,7 +130,7 @@ describe('CreateTransactionController', () => {
 
         expect(result.statusCode).toBe(400)
     })
-    it('should return 400 if the provided type is invalid', async () => {
+    it('should return 400 if the provided type is not EARNING, EXPENSE OR INVESTMENT', async () => {
         const { sut } = makeSut()
 
         const result = await sut.execute({
