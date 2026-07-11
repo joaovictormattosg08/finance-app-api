@@ -23,7 +23,7 @@ describe('CreateTransactionController', () => {
             user_id: faker.string.uuid(),
             date: faker.date.anytime().toISOString(),
             amount: Number(faker.finance.amount()),
-            type: 'EARNING',
+            type: faker.random,
         },
     }
 
@@ -106,7 +106,19 @@ describe('CreateTransactionController', () => {
         const result = await sut.execute({
             body: {
                 ...httpRequest,
-                date: 'data_errada',
+                date: 'invalid_date',
+            },
+        })
+
+        expect(result.statusCode).toBe(400)
+    })
+    it('should return 400 if the provided type is invalid', async () => {
+        const { sut } = makeSut()
+
+        const result = await sut.execute({
+            body: {
+                ...httpRequest,
+                type: 'invalid_type',
             },
         })
 
