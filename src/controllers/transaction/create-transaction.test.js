@@ -72,4 +72,16 @@ describe('CreateTransactionController', () => {
 
         expect(result.statusCode).toBe(400)
     })
+    it('should return 400 if amount is not provided', async () => {
+        const { sut } = makeSut()
+
+        const result = await sut.execute({
+            body: {
+                ...httpRequest,
+                amount: undefined,
+            },
+        })
+
+        expect(result.statusCode).toBe(400)
+    })
 })
