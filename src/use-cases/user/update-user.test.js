@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker'
+import { fa, faker } from '@faker-js/faker'
 import { UpdateUserUseCase } from './update-user'
 import { EmailAlreadyInUseError } from '../../errors/user'
 
@@ -121,5 +121,18 @@ describe('UpdateUserUseCase', () => {
             ...updateUserParams,
             password: 'hashed_password',
         })
+    })
+
+    it('should throw if GetUserByEmailRepository throws', async () => {
+        const { sut, getUserByEmailRepository } = makeSut()
+        jest.spyOn(getUserByEmailRepository, 'execute').mockRejectedValueOnce(
+            new Error(),
+        )
+
+        const promise = sut.execute(user.id, {
+            email: faker.internet.email(),
+        })
+
+        await expect(promise).rejects.toThrow()
     })
 })
