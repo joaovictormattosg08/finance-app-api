@@ -1,5 +1,3 @@
-import bcrypt from 'bcrypt'
-import { v4 as uuidv4 } from 'uuid'
 import {} from '../../repositories/postgres/user/get-user-by-email.js'
 import { EmailAlreadyInUseError } from '../../errors/user.js'
 
@@ -8,10 +6,12 @@ export class CreateUserUseCase {
         PostgresGetUserByEmailRepository,
         PostgresCreateUserRepository,
         passwordHasherAdapter,
+        idGeneratorAdapter,
     ) {
         this.PostgresGetUserByEmailRepository = PostgresGetUserByEmailRepository
         this.PostgresCreateUserRepository = PostgresCreateUserRepository
         this.passwordHasherAdapter = passwordHasherAdapter
+        this.idGeneratorAdapter = idGeneratorAdapter
     }
 
     async execute(createUserParams) {
@@ -27,7 +27,7 @@ export class CreateUserUseCase {
         }
 
         //gerar ID do usuário
-        const userId = uuidv4()
+        const userId = this.idGeneratorAdapter.execute()
 
         //Criptografar a senha
         const hashedPassword = await this.passwordHasherAdapter.execute(
