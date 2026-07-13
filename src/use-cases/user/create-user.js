@@ -15,8 +15,6 @@ export class CreateUserUseCase {
     }
 
     async execute(createUserParams) {
-        //TODO:Verificar se o e-mail já está em uso
-
         const userWithProvidedEmail =
             await this.PostgresGetUserByEmailRepository.execute(
                 createUserParams.email,
