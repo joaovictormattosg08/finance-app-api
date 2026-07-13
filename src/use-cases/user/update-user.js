@@ -9,12 +9,10 @@ export class UpdateUserUseCase {
     constructor(
         PostgresGetUserByEmailRepository,
         PostgresUpdateUserRepository,
-        PostgresGetUserByIdRepository,
         passwordHasherAdapter,
     ) {
         this.PostgresGetUserByEmailRepository = PostgresGetUserByEmailRepository
         this.PostgresUpdateUserRepository = PostgresUpdateUserRepository
-        this.PostgresGetUserByIdRepository = PostgresGetUserByIdRepository
         this.passwordHasherAdapter = passwordHasherAdapter
     }
 
@@ -28,13 +26,6 @@ export class UpdateUserUseCase {
             if (userWithProvidedEmail) {
                 throw new EmailAlreadyInUseError(updateUserParams.email)
             }
-        }
-
-        const userExists =
-            await this.PostgresGetUserByIdRepository.execute(userId)
-
-        if (!userExists) {
-            throw new UserNotFoundError(userId)
         }
 
         const user = { ...updateUserParams }
