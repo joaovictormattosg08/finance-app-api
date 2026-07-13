@@ -92,7 +92,7 @@ describe('Create User Use Case', () => {
         })
     })
 
- it('should call IdGeneratorAdapter and PasswordHasherAdapter to generate a random id and cryptograph password', async () => {
+    it('should call IdGeneratorAdapter and PasswordHasherAdapter to generate a random id and cryptograph password', async () => {
         const {
             sut,
             idGeneratorAdapter,
@@ -115,5 +115,16 @@ describe('Create User Use Case', () => {
             password: 'hashed_password',
             id: 'generated_id',
         })
+    })
+
+    it('should throw if GetUserByEmailRepository throws', async () => {
+        const { sut, getUserByEmailRepository } = makeSut()
+        jest.spyOn(getUserByEmailRepository, 'execute').mockRejectedValueOnce(
+            new Error(),
+        )
+
+        const promise = sut.execute(user)
+
+        await expect(promise).rejects.toThrow()
     })
 })
