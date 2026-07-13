@@ -5,11 +5,13 @@ export class CreateTransactionUseCase {
     constructor(
         PostgresCreateTransactionRepository,
         PostgresGetUserByIdRepository,
+        idGeneratorAdapter,
     ) {
         this.PostgresCreateTransactionRepository =
             PostgresCreateTransactionRepository
 
         this.PostgresGetUserByIdRepository = PostgresGetUserByIdRepository
+        this.idGeneratorAdapter = idGeneratorAdapter
     }
 
     async execute(createTransactionParams) {
@@ -21,7 +23,7 @@ export class CreateTransactionUseCase {
             throw new UserNotFoundError(userId)
         }
 
-        const transactionId = uuidv4()
+        const transactionId = this.idGeneratorAdapter.execute()
 
         const transaction =
             await this.PostgresCreateTransactionRepository.execute({
