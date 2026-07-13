@@ -68,6 +68,6 @@ describe('GetUserBalanceController', () => {
 
         const result = await sut.execute(httpRequest)
 
-        expect(executeSpy).toHaveBeenCalledWith(httpRequest.params)
+        expect(executeSpy).toHaveBeenCalledWith(httpRequest.params.userId)
     })
 })
