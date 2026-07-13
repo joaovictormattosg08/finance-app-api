@@ -5,3 +5,5 @@ node_modules
 #Postgres volume
 .env
 /src/generated/prisma
+
+coverage
