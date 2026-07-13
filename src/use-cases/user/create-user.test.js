@@ -35,16 +35,22 @@ describe('Create User Use Case', () => {
         const getUserByEmailRepository = new GetUserByEmailRepositoryStub()
         const createUserRepository = new CreateUserRepositoryStub()
         const passwordHasherAdapter = new PasswordHasherAdapterSutb()
-        const idGeneratorAdapterStub = new IdGeneratorAdapterStub()
+        const idGeneratorAdapter = new IdGeneratorAdapterStub()
 
         const sut = new CreateUserUseCase(
             getUserByEmailRepository,
             createUserRepository,
             passwordHasherAdapter,
-            idGeneratorAdapterStub,
+            idGeneratorAdapter,
         )
 
-        return { sut, getUserByEmailRepository }
+        return {
+            sut,
+            getUserByEmailRepository,
+            idGeneratorAdapter,
+            createUserRepository,
+            passwordHasherAdapter,
+        }
     }
 
     it('should successfully create a user', async () => {
@@ -67,4 +73,24 @@ describe('Create User Use Case', () => {
             new EmailAlreadyInUseError(user.email),
         )
     })
+
+    it('should call IdGeneratorAdapter to generate a random id ', async () => {
+        const { sut, idGeneratorAdapter, createUserRepository } = makeSut()
+        const idGeneratorSpy = jest.spyOn(idGeneratorAdapter, 'execute')
+        const createUserRepositorySpy = jest.spyOn(
+            createUserRepository,
+            'execute',
+        )
+
+        await sut.execute(user)
+
+        expect(idGeneratorSpy).toHaveBeenCalled()
+        expect(createUserRepositorySpy).toHaveBeenCalledWith({
+            ...user,
+            password: 'hashed_password',
+            id: 'generated_id',
+        })
+    })
+
+ x
 })
