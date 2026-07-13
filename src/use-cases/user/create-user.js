@@ -7,9 +7,11 @@ export class CreateUserUseCase {
     constructor(
         PostgresGetUserByEmailRepository,
         PostgresCreateUserRepository,
+        passwordHasherAdapter,
     ) {
         this.PostgresGetUserByEmailRepository = PostgresGetUserByEmailRepository
         this.PostgresCreateUserRepository = PostgresCreateUserRepository
+        this.passwordHasherAdapter = passwordHasherAdapter
     }
 
     async execute(createUserParams) {
@@ -28,7 +30,9 @@ export class CreateUserUseCase {
         const userId = uuidv4()
 
         //Criptografar a senha
-        const hashedPassword = await bcrypt.hash(createUserParams.password, 10)
+        const hashedPassword = await this.passwordHasherAdapter.execute(
+            createUserParams.password,
+        )
 
         //Inserir o usuário no banco
         const user = {

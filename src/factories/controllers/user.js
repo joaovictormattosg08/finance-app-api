@@ -22,6 +22,7 @@ import {
     DeleteUserUseCase,
     GetUserBalanceUseCase,
 } from '../../use-cases/index.js'
+import { PasswordHasherAdapter } from '../../adapters/password-hasher.js'
 
 export const makeGetUserByIdController = () => {
     const postgresGetUserByIdRepository = new PostgresGetUserByIdRepository()
@@ -39,10 +40,12 @@ export const makeCreateUserController = () => {
     const postgresGetUserByEmailRepository =
         new PostgresGetUserByEmailRepository()
     const postgresCreateUserRepository = new PostgresCreateUserRepository()
+    const passwordHasherAdapter = new PasswordHasherAdapter()
 
     const createUserUseCase = new CreateUserUseCase(
         postgresGetUserByEmailRepository,
         postgresCreateUserRepository,
+        passwordHasherAdapter,
     )
 
     const createUserController = new CreateUserController(createUserUseCase)
