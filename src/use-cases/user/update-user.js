@@ -10,10 +10,12 @@ export class UpdateUserUseCase {
         PostgresGetUserByEmailRepository,
         PostgresUpdateUserRepository,
         PostgresGetUserByIdRepository,
+        passwordHasherAdapter,
     ) {
         this.PostgresGetUserByEmailRepository = PostgresGetUserByEmailRepository
         this.PostgresUpdateUserRepository = PostgresUpdateUserRepository
         this.PostgresGetUserByIdRepository = PostgresGetUserByIdRepository
+        this.passwordHasherAdapter = passwordHasherAdapter
     }
 
     async execute(userId, updateUserParams) {
@@ -38,9 +40,8 @@ export class UpdateUserUseCase {
         const user = { ...updateUserParams }
 
         if (updateUserParams.password) {
-            const hashedPassword = await bcrypt.hash(
+            const hashedPassword = await this.passwordHasherAdapter.execute(
                 updateUserParams.password,
-                10,
             )
 
             user.password = hashedPassword
