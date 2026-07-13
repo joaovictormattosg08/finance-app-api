@@ -28,4 +28,6 @@ export const createUserSchema = z.object({
         }),
 })
 
-export const updateUserSchema = createUserSchema.partial().strict()
+export const updateUserSchema = createUserSchema.partial().strict({
+    message: 'Some provided field is not allowed',
+})
