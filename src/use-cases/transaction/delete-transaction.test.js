@@ -1,22 +1,11 @@
 import { DeleteTransactionUseCase } from './delete-transaction'
 import { faker } from '@faker-js/faker'
+import { transaction } from '../../test/index'
 
 describe('DeleteTransactionUseCase', () => {
-    const transaction = {
-        id: faker.string.uuid(),
-        name: faker.string.alphanumeric(10),
-        user_id: faker.string.uuid(),
-        date: faker.date.anytime().toISOString(),
-        amount: Number(faker.finance.amount()),
-        type: 'EARNING',
-    }
-
     class DeleteTransactionRepositoryStub {
-        async execute(transactionId) {
-            return {
-                ...transaction,
-                id: transactionId,
-            }
+        async execute() {
+            return transaction
         }
     }
 
@@ -35,21 +24,18 @@ describe('DeleteTransactionUseCase', () => {
     it('should delete transaction successfully', async () => {
         const { sut } = makeSut()
 
-        const result = await sut.execute(transaction.id)
+        const result = await sut.execute(transaction)
 
-        expect(result).toEqual({
-            ...transaction,
-            id: transaction.id,
-        })
+        expect(result).toEqual(transaction)
     })
 
     it('should call DeleteTransactionRepository with correct params', async () => {
         const { sut, deleteTransactionRepository } = makeSut()
         const executeSpy = jest.spyOn(deleteTransactionRepository, 'execute')
 
-        const result = await sut.execute(transaction.id)
+        const result = await sut.execute(transaction)
 
-        expect(executeSpy).toHaveBeenCalledWith(transaction.id)
+        expect(executeSpy).toHaveBeenCalledWith(transaction)
     })
 
     it('should throw if DeleteTransactionRepository throws', async () => {
@@ -59,7 +45,7 @@ describe('DeleteTransactionUseCase', () => {
             'execute',
         ).mockRejectedValueOnce(new Error())
 
-        const promise = sut.execute(transaction.id)
+        const promise = sut.execute(transaction)
 
         await expect(promise).rejects.toThrow()
     })
