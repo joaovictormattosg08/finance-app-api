@@ -1,8 +1,13 @@
 import { faker } from '@faker-js/faker'
 import { CreateUserUseCase } from './create-user'
 import { EmailAlreadyInUseError } from '../../errors/user'
+import { user as fixtureUser } from '../../test/index'
 
 describe('Create User Use Case', () => {
+    const user = {
+        ...fixtureUser,
+        id: undefined,
+    }
     class GetUserByEmailRepositoryStub {
         async execute() {
             return null
@@ -25,12 +30,6 @@ describe('Create User Use Case', () => {
         }
     }
 
-    const user = {
-        first_name: faker.person.firstName(),
-        last_name: faker.person.lastName(),
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-    }
     const makeSut = () => {
         const getUserByEmailRepository = new GetUserByEmailRepositoryStub()
         const createUserRepository = new CreateUserRepositoryStub()

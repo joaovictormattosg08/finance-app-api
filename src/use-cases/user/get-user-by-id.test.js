@@ -1,14 +1,8 @@
 import { GetUserByIdUseCase } from './get-user-by-id'
 import { faker } from '@faker-js/faker'
+import { user } from '../../test'
 
 describe('GetUserByIdUseCase', () => {
-    const user = {
-        first_name: faker.person.firstName(),
-        last_name: faker.person.lastName(),
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-    }
-
     const userId = {
         params: {
             userId: faker.string.uuid(),

@@ -1,14 +1,9 @@
 import { faker } from '@faker-js/faker'
 import { GetUserBalanceUseCase } from './get-user-balance'
 import { UserNotFoundError } from '../../errors/user'
+import { userBalance } from '../../test'
 
 describe('GetUserBalanceUseCase', () => {
-    const userBalance = {
-        earnings: faker.finance.amount(),
-        balance: faker.finance.amount(),
-        expenses: faker.finance.amount(),
-        investments: faker.finance.amount(),
-    }
     class GetUserBalanceRepositoryStub {
         async execute() {
             return userBalance
