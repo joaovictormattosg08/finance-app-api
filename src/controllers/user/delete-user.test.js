@@ -1,17 +1,13 @@
 import { faker } from '@faker-js/faker'
 import { DeleteUserController } from './delete-user.js'
+import { transaction, user } from '../../test'
+import { UserNotFoundError } from '../../errors/user.js'
 
 describe('DeleteUserController', () => {
     class DeleteUserUseCaseStub {
         async execute() {
             return {
-                id: faker.string.uuid(),
-                first_name: faker.person.firstName(),
-                last_name: faker.person.lastName(),
-                email: faker.internet.email(),
-                password: faker.internet.password({
-                    length: 7,
-                }),
+                user,
             }
         }
     }
@@ -70,6 +66,17 @@ describe('DeleteUserController', () => {
         const result = await sut.execute(httpRequest)
 
         expect(result.statusCode).toBe(500)
+    })
+
+    it('should return 404 if user not found ', async () => {
+        const { sut, deleteUserUseCase } = makeSut()
+        jest.spyOn(deleteUserUseCase, 'execute').mockImplementationOnce(() => {
+            throw new UserNotFoundError()
+        })
+
+        const result = await sut.execute(httpRequest)
+
+        expect(result.statusCode).toBe(404)
     })
 
     it('should calls deleteUserUseCase with correct params ', async () => {

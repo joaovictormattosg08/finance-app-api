@@ -8,6 +8,7 @@ import {
     badRequest,
     serverError,
     sucess,
+    notFound,
 } from '../helpers/index.js'
 import { ZodError } from 'zod'
 
@@ -47,7 +48,7 @@ export class UpdateUserController {
             }
 
             if (error instanceof UserNotFoundError) {
-                return badRequest({ message: error.message })
+                return notFound({ message: error.message })
             }
 
             return serverError()

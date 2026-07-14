@@ -35,7 +35,7 @@ export class DeleteUserController {
             return sucess(deletedUser)
         } catch (error) {
             if (error instanceof UserNotFoundError) {
-                return badRequest({ message: error.message })
+                return notFound({ message: error.message })
             }
 
             return serverError()
