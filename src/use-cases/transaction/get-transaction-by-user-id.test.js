@@ -12,7 +12,7 @@ describe('GetTransactionByUserIdUseCase', () => {
     }
 
     class GetTransactionByUserIdRepositoryStub {
-        async execute() {
+        async execute(userId) {
             return []
         }
     }
@@ -51,9 +51,21 @@ describe('GetTransactionByUserIdUseCase', () => {
     it('should throw UserNotFoundError if user does not exist', async () => {
         const { sut, getUserByIdRepository } = makeSut()
         jest.spyOn(getUserByIdRepository, 'execute').mockResolvedValueOnce(null)
+        const userId = faker.string.uuid()
+        const promise = sut.execute(userId)
 
-        const promise = sut.execute(faker.string.uuid())
+        await expect(promise).rejects.toThrow(new UserNotFoundError(userId))
+    })
 
-        await expect(promise).rejects.toThrow(new UserNotFoundError())
+    it('should call GetTransactionByUserIdRepository with correct params', async () => {
+        const { sut, getTransactionByUserIdRepository } = makeSut()
+        const executeSpy = jest.spyOn(
+            getTransactionByUserIdRepository,
+            'execute',
+        )
+        const id = faker.string.uuid()
+
+        await sut.execute(id)
+        expect(executeSpy).toHaveBeenCalledWith(id)
     })
 })
