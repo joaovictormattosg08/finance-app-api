@@ -97,6 +97,6 @@ describe('GetTransactionByUserIdController', () => {
 
         const result = await sut.execute(httpRequest)
 
-        expect(executeSpy).toHaveBeenCalledWith(httpRequest.query)
+        expect(executeSpy).toHaveBeenCalledWith(httpRequest.query.userId)
     })
 })
