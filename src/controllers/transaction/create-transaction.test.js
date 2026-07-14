@@ -1,11 +1,10 @@
 import { faker } from '@faker-js/faker'
 import { CreateTransactionController } from './create-transaction.js'
-import { fa } from 'zod/locales'
-import { date } from 'zod'
+import { transaction } from '../../test'
 
 describe('CreateTransactionController', () => {
     class CreateTransactionUseCaseStub {
-        async execute(transaction) {
+        async execute() {
             return transaction
         }
     }
