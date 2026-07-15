@@ -4,6 +4,7 @@ node_modules
 .postgres-data
 #Postgres volume
 .env
+.env.test
 /src/generated/prisma
 
 coverage
