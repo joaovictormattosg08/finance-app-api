@@ -8,6 +8,6 @@ describe('CreateUserRepository', () => {
 
         const result = sut.execute(user)
 
-        expect(result).not.toBeNull()
+        expect(result).toBeTruthy()
     })
 })
