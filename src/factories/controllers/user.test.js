@@ -26,4 +26,10 @@ describe('User Controller Factories', () => {
             GetUserBalanceController,
         )
     })
+    it('should return a valid GetUserByIdController instace', () => {
+        expect(makeGetUserByIdController()).toBeInstanceOf(
+            GetUserByIdController,
+        )
+    })
+    
 })
