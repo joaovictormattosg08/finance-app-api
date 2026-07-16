@@ -48,15 +48,6 @@ describe('DeleteUserController', () => {
         expect(result.statusCode).toBe(400)
     })
 
-    it('should return 404 if user is not found', async () => {
-        const { sut, deleteUserUseCase } = makeSut()
-        jest.spyOn(deleteUserUseCase, 'execute').mockReturnValueOnce(null)
-
-        const result = await sut.execute(httpRequest)
-
-        expect(result.statusCode).toBe(404)
-    })
-
     it('should return 500 if deleteUser Throws', async () => {
         const { sut, deleteUserUseCase } = makeSut()
         jest.spyOn(deleteUserUseCase, 'execute').mockRejectedValueOnce(
@@ -70,9 +61,9 @@ describe('DeleteUserController', () => {
 
     it('should return 404 if user not found ', async () => {
         const { sut, deleteUserUseCase } = makeSut()
-        jest.spyOn(deleteUserUseCase, 'execute').mockImplementationOnce(() => {
-            throw new UserNotFoundError()
-        })
+        jest.spyOn(deleteUserUseCase, 'execute').mockRejectedValueOnce(
+            new UserNotFoundError(user.id),
+        )
 
         const result = await sut.execute(httpRequest)
 
