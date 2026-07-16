@@ -29,4 +29,10 @@ describe('Transaction controller Factories', () => {
             GetTransactionByUserIdController,
         )
     })
+
+    it('should return a valid UpdateTransactionController instace', () => {
+        expect(makeUpdateTransactionController()).toBeInstanceOf(
+            UpdateTransactionController,
+        )
+    })
 })
