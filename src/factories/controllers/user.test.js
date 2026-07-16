@@ -31,5 +31,7 @@ describe('User Controller Factories', () => {
             GetUserByIdController,
         )
     })
-    
+    it('should return a valid UpdateUserController instace', () => {
+        expect(makeUpdateUserController()).toBeInstanceOf(UpdateUserController)
+    })
 })
