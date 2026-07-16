@@ -17,4 +17,10 @@ describe('Transaction controller Factories', () => {
             CreateTransactionController,
         )
     })
+
+    it('should return a valid DeleteTransactionController instace', () => {
+        expect(makeDeleteTransactionController()).toBeInstanceOf(
+            DeleteTransactionController,
+        )
+    })
 })
