@@ -17,4 +17,8 @@ describe('User Controller Factories', () => {
     it('should return a valid CreateUserController instace', () => {
         expect(makeCreateUserController()).toBeInstanceOf(CreateUserController)
     })
+
+    it('should return a valid DeleteUserController instace', () => {
+        expect(makeDeleteUserController()).toBeInstanceOf(DeleteUserController)
+    })
 })
