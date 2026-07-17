@@ -20,7 +20,7 @@ export class CreateUserController {
             const createdUser = await this.CreateUserUseCase.execute(params)
             //retornar a resposta para o usuário (status code)
 
-            return created({ message: createdUser })
+            return created(createdUser)
         } catch (error) {
             if (error instanceof ZodError) {
                 return badRequest({
