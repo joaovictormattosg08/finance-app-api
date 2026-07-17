@@ -11,7 +11,7 @@ import {
 import { usersRouter } from './src/routes/user.js'
 import { transactionsRouter } from './src/routes/transactions.js'
 
-const app = express()
+export const app = express()
 
 app.use(express.json())
 
