@@ -68,5 +68,6 @@ describe('User Routes E2E Tests', () => {
         )
 
         expect(response.status).toBe(200)
+        expect(response.body).toEqual(createdUser)
     })
 })
