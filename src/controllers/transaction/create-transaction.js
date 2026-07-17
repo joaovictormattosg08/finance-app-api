@@ -1,5 +1,12 @@
+import { UserNotFoundError } from '../../errors/user.js'
 import { createTransactionSchema } from '../../schemas/transaction.js'
-import { serverError, badRequest, sucess, created } from '../helpers/index.js'
+import {
+    serverError,
+    badRequest,
+    sucess,
+    created,
+    userNotFoundResponse,
+} from '../helpers/index.js'
 
 import { ZodError } from 'zod'
 
@@ -23,6 +30,9 @@ export class CreateTransactionController {
                 return badRequest({
                     message: error.issues[0].message,
                 })
+            }
+            if (error instanceof UserNotFoundError) {
+                return userNotFoundResponse()
             }
 
             console.error(error)
