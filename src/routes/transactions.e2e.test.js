@@ -98,4 +98,12 @@ describe('Transaction Routes E2E Tests', () => {
 
         expect(response.status).toBe(200)
     })
+
+    it('PATCH /api/transactions/:transactionId should return 404 when updating a non-existing transaction', async () => {
+        const response = await request(app)
+            .patch(`/api/transactions/${faker.string.uuid()}`)
+            .send({ amount: 100 })
+
+        expect(response.status).toBe(404)
+    })
 })
