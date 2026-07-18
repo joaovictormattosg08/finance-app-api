@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-export const transaction = {
+export const transactionParams = {
     id: faker.string.uuid(),
     name: faker.string.alphanumeric(10),
     user_id: faker.string.uuid(),

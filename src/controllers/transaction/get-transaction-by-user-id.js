@@ -33,7 +33,6 @@ export class GetTransactionByUserIdController {
 
             return sucess(transactions)
         } catch (error) {
-            console.log(error)
             if (error instanceof UserNotFoundError) {
                 return userNotFoundResponse()
             }

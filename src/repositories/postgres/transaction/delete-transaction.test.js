@@ -1,4 +1,4 @@
-import { transaction, user } from '../../../test'
+import { transactionParams, user } from '../../../test'
 import { prisma } from '../../../../prisma/prisma'
 import { PostgresDeleteTransactionRepository } from './delete-transaction'
 import dayjs from 'dayjs'
@@ -10,38 +10,42 @@ describe('DeleteTransactionRepository', () => {
         await prisma.user.create({ data: user })
 
         await prisma.transaction.create({
-            data: { ...transaction, user_id: user.id },
+            data: { ...transactionParams, user_id: user.id },
         })
 
         const sut = new PostgresDeleteTransactionRepository()
 
-        const result = await sut.execute(transaction.id)
+        const result = await sut.execute(transactionParams.id)
 
-        expect(result.name).toBe(transaction.name)
-        expect(String(result.amount)).toBe(String(transaction.amount))
-        expect(result.type).toBe(transaction.type)
-        expect(result.id).toBe(transaction.id)
+        expect(result.name).toBe(transactionParams.name)
+        expect(String(result.amount)).toBe(String(transactionParams.amount))
+        expect(result.type).toBe(transactionParams.type)
+        expect(result.id).toBe(transactionParams.id)
         expect(result.user_id).toBe(user.id)
         expect(dayjs(result.date).daysInMonth()).toBe(
-            dayjs(transaction.date).daysInMonth(),
+            dayjs(transactionParams.date).daysInMonth(),
         )
-        expect(dayjs(result.date).month()).toBe(dayjs(transaction.date).month())
-        expect(dayjs(result.date).year()).toBe(dayjs(transaction.date).year())
+        expect(dayjs(result.date).month()).toBe(
+            dayjs(transactionParams.date).month(),
+        )
+        expect(dayjs(result.date).year()).toBe(
+            dayjs(transactionParams.date).year(),
+        )
     })
 
     it('should call prisma with correct params', async () => {
         await prisma.user.create({ data: user })
 
         await prisma.transaction.create({
-            data: { ...transaction, user_id: user.id },
+            data: { ...transactionParams, user_id: user.id },
         })
         const sut = new PostgresDeleteTransactionRepository()
         const prismaSpy = jest.spyOn(prisma.transaction, 'delete')
 
-        const result = await sut.execute(transaction.id)
+        const result = await sut.execute(transactionParams.id)
 
         expect(prismaSpy).toHaveBeenCalledWith({
-            where: { id: transaction.id },
+            where: { id: transactionParams.id },
         })
     })
 
@@ -51,7 +55,7 @@ describe('DeleteTransactionRepository', () => {
             new Error(),
         )
 
-        const promise = sut.execute(transaction)
+        const promise = sut.execute(transactionParams.id)
 
         await expect(promise).rejects.toThrow()
     })
@@ -64,10 +68,10 @@ describe('DeleteTransactionRepository', () => {
             }),
         )
 
-        const promise = sut.execute(transaction)
+        const promise = sut.execute(transactionParams.id)
 
         await expect(promise).rejects.toThrow(
-            new TransactionNotFoundError(transaction.id),
+            new TransactionNotFoundError(transactionParams.id),
         )
     })
 })

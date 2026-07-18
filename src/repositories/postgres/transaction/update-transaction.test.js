@@ -1,5 +1,5 @@
 import { prisma } from '../../../../prisma/prisma'
-import { transaction, user } from '../../../test'
+import { transactionParams, user } from '../../../test'
 import { PostgresUpdateTransactionRepository } from './update-transaction'
 import { faker } from '@faker-js/faker'
 import dayjs from 'dayjs'
@@ -16,11 +16,11 @@ describe('UpdateTransactionRepository', () => {
     it('should update a transaction on db', async () => {
         await prisma.user.create({ data: user })
         await prisma.transaction.create({
-            data: { ...transaction, user_id: user.id },
+            data: { ...transactionParams, user_id: user.id },
         })
         const sut = new PostgresUpdateTransactionRepository()
 
-        const result = await sut.execute(transaction.id, params)
+        const result = await sut.execute(transactionParams.id, params)
 
         expect(result.name).toBe(params.name)
         expect(String(result.amount)).toBe(String(params.amount))
@@ -37,21 +37,21 @@ describe('UpdateTransactionRepository', () => {
     it('should call prisma with correct params', async () => {
         await prisma.user.create({ data: user })
         await prisma.transaction.create({
-            data: { ...transaction, user_id: user.id },
+            data: { ...transactionParams, user_id: user.id },
         })
         const sut = new PostgresUpdateTransactionRepository()
         const prismaSpy = jest.spyOn(prisma.transaction, 'update')
 
-        await sut.execute(transaction.id, {
-            ...transaction,
+        await sut.execute(transactionParams.id, {
+            ...transactionParams,
             user_id: user.id,
         })
 
         expect(prismaSpy).toHaveBeenCalledWith({
             where: {
-                id: transaction.id,
+                id: transactionParams.id,
             },
-            data: { ...transaction, user_id: user.id },
+            data: { ...transactionParams, user_id: user.id },
         })
     })
 

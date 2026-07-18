@@ -1,11 +1,11 @@
 import { UserNotFoundError } from '../../errors/user'
 import { CreateTransactionUseCase } from './create-transaction'
 import { faker } from '@faker-js/faker'
-import { transaction, user } from '../../test/index'
+import { transaction, transactionParams, user } from '../../test/index'
 
 describe('CreateTransactionUseCase', () => {
     const createTransactionParams = {
-        ...transaction,
+        ...transactionParams,
         id: undefined,
     }
 
