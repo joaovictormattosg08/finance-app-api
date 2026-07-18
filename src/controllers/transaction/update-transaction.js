@@ -6,7 +6,9 @@ import {
     serverError,
     badRequest,
     sucess,
+    transactionNotFoundResponse,
 } from '../helpers/index.js'
+import { TransactionNotFoundError } from '../../errors/transaction.js'
 import { ZodError } from 'zod'
 
 export class UpdateTransactionController {
@@ -37,6 +39,10 @@ export class UpdateTransactionController {
                 return badRequest({
                     message: error.issues[0].message,
                 })
+            }
+
+            if (error instanceof TransactionNotFoundError) {
+                return transactionNotFoundResponse()
             }
 
             console.error(error)
