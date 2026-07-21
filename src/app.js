@@ -2,6 +2,10 @@ import express, { request, response } from 'express'
 
 import { usersRouter } from './routes/user.js'
 import { transactionsRouter } from './routes/transactions.js'
+import swaggerUi from 'swagger-ui-express'
+import fs from 'fs'
+import path from 'path'
+import { json } from 'zod'
 
 export const app = express()
 
@@ -10,4 +14,12 @@ app.use(express.json())
 app.use('/api/users', usersRouter)
 
 app.use('/api/transactions', transactionsRouter)
-// 3000: Porta que será usada para acessar o projeto
+
+const swaggerDocument = JSON.parse(
+    fs.readFileSync(
+        path.join(import.meta.dirname, '../docs/swagger.json'),
+        'utf-8',
+    ),
+)
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
