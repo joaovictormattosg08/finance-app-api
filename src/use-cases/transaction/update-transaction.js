@@ -1,4 +1,3 @@
-
 export class UpdateTransactionUseCase {
     constructor(PostgresUpdateTransactionRepository) {
         this.PostgresUpdateTransactionRepository =

@@ -22,8 +22,12 @@ describe('CreateTransactionRepository', () => {
         expect(dayjs(result.date).daysInMonth()).toBe(
             dayjs(transactionParams.date).daysInMonth(),
         )
-        expect(dayjs(result.date).month()).toBe(dayjs(transactionParams.date).month())
-        expect(dayjs(result.date).year()).toBe(dayjs(transactionParams.date).year())
+        expect(dayjs(result.date).month()).toBe(
+            dayjs(transactionParams.date).month(),
+        )
+        expect(dayjs(result.date).year()).toBe(
+            dayjs(transactionParams.date).year(),
+        )
     })
 
     it('should call prisma with correct params', async () => {

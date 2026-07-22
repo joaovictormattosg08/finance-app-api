@@ -1,5 +1,3 @@
-
-
 import { EmailAlreadyInUseError } from '../../errors/user.js'
 
 export class UpdateUserUseCase {

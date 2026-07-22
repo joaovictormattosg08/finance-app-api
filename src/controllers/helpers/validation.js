@@ -14,7 +14,3 @@ export const requiredFieldIsMissingResponse = (field) => {
         message: `The field ${field} is required`,
     })
 }
-
-
-
-

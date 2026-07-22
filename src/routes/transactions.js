@@ -26,26 +26,20 @@ transactionsRouter.post('/', async (request, response) => {
     response.status(statusCode).json(body)
 })
 
-transactionsRouter.patch(
-    '/:transactionId',
-    async (request, response) => {
-        const updateTransactionController = makeUpdateTransactionController()
+transactionsRouter.patch('/:transactionId', async (request, response) => {
+    const updateTransactionController = makeUpdateTransactionController()
 
-        const { statusCode, body } =
-            await updateTransactionController.execute(request)
+    const { statusCode, body } =
+        await updateTransactionController.execute(request)
 
-        response.status(statusCode).json(body)
-    },
-)
+    response.status(statusCode).json(body)
+})
 
-transactionsRouter.delete(
-    '/:transactionId',
-    async (request, response) => {
-        const DeleteTransactionController = makeDeleteTransactionController()
+transactionsRouter.delete('/:transactionId', async (request, response) => {
+    const DeleteTransactionController = makeDeleteTransactionController()
 
-        const { statusCode, body } =
-            await DeleteTransactionController.execute(request)
+    const { statusCode, body } =
+        await DeleteTransactionController.execute(request)
 
-        response.status(statusCode).json(body)
-    },
-)
+    response.status(statusCode).json(body)
+})
