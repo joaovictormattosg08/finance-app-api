@@ -1,4 +1,4 @@
-import { fa, faker } from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 import { UpdateUserUseCase } from './update-user'
 import { EmailAlreadyInUseError } from '../../errors/user'
 import { user } from '../../test'
@@ -102,7 +102,7 @@ describe('UpdateUserUseCase', () => {
             password: user.password,
         }
 
-        const result = await sut.execute(user.id, updateUserParams)
+        await sut.execute(user.id, updateUserParams)
 
         expect(executeSpy).toHaveBeenCalledWith(user.id, {
             ...updateUserParams,

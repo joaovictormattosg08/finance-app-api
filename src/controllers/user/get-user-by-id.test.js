@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker'
 import { GetUserByIdController } from './get-user-by-id'
-import { UserNotFoundError } from '../../errors/user'
 import { user } from '../../test'
 
 describe('GetUserByIdController', () => {
@@ -79,7 +78,7 @@ describe('GetUserByIdController', () => {
         const { sut, getUserByIdUseCase } = makeSut()
         const executeSpy = jest.spyOn(getUserByIdUseCase, 'execute')
 
-        const result = await sut.execute(httpRequest)
+        await sut.execute(httpRequest)
 
         expect(executeSpy).toHaveBeenCalledWith(httpRequest.params.userId)
     })

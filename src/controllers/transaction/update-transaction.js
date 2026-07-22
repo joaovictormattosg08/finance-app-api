@@ -1,5 +1,4 @@
 import { updateTransactionSchema } from '../../schemas/transaction.js'
-import { updateUserSchema } from '../../schemas/user.js'
 import {
     checkIfIdIsValid,
     invalidIdResponse,

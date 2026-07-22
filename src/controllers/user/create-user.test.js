@@ -72,7 +72,6 @@ describe('Create User Controller', () => {
     })
     it('Should return 400 if email is not provided', async () => {
         //arrange
-        const createUserUseCase = new CreateUserUseCaseStub()
         const { sut } = makeSut()
 
         //act
@@ -142,7 +141,7 @@ describe('Create User Controller', () => {
         const executeSpy = jest.spyOn(createUserUseCase, 'execute')
 
         //act
-        const result = await sut.execute(httpRequest)
+        await sut.execute(httpRequest)
 
         //assert
         expect(executeSpy).toHaveBeenCalledWith(httpRequest.body)

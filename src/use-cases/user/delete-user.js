@@ -1,11 +1,5 @@
-import {
-    PostgresDeleteUserRepository,
-    PostgresGetUserByIdRepository,
-} from '../../repositories/postgres/index.js'
-import { UserNotFoundError } from '../../errors/user.js'
-
 export class DeleteUserUseCase {
-    constructor(PostgresDeleteUserRepository, PostgresGetUserByIdRepository) {
+    constructor(PostgresDeleteUserRepository) {
         this.PostgresDeleteUserRepository = PostgresDeleteUserRepository
     }
 

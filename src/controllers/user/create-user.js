@@ -1,4 +1,3 @@
-import validator from 'validator'
 import { EmailAlreadyInUseError } from '../../errors/user.js'
 import { createUserSchema } from '../../schemas/user.js'
 import { badRequest, created, serverError } from '../helpers/index.js'

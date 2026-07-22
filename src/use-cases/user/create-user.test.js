@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker'
 import { CreateUserUseCase } from './create-user'
 import { EmailAlreadyInUseError } from '../../errors/user'
 import { user as fixtureUser } from '../../test/index'

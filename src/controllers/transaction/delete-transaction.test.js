@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker'
 import { DeleteTransactionController } from './delete-transaction'
-import { transactionNotFoundResponse } from '../helpers'
 import { transaction } from '../../test'
 import { TransactionNotFoundError } from '../../errors/transaction'
 
@@ -72,7 +71,7 @@ describe('DeleteTransactionController', () => {
         const { sut, deleteTransactionUseCase } = makeSut()
         const executeSpy = jest.spyOn(deleteTransactionUseCase, 'execute')
 
-        const result = await sut.execute(httpRequest)
+        await sut.execute(httpRequest)
 
         expect(executeSpy).toHaveBeenCalledWith(
             httpRequest.params.transactionId,

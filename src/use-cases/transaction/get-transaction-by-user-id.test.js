@@ -5,7 +5,7 @@ import { user } from '../../test/index'
 
 describe('GetTransactionByUserIdUseCase', () => {
     class GetTransactionByUserIdRepositoryStub {
-        async execute(userId) {
+        async execute() {
             return []
         }
     }

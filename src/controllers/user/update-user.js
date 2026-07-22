@@ -1,6 +1,4 @@
-import validator from 'validator'
 import { updateUserSchema } from '../../schemas/user.js'
-import { UpdateUserUseCase } from '../../use-cases/index.js'
 import { EmailAlreadyInUseError, UserNotFoundError } from '../../errors/user.js'
 import {
     invalidIdResponse,

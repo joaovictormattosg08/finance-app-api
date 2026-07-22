@@ -1,7 +1,6 @@
 import { PostgresCreateTransactionRepository } from './create-transaction'
 import { transactionParams, user } from '../../../test'
 import { prisma } from '../../../../prisma/prisma'
-import { Result } from 'pg'
 import dayjs from 'dayjs'
 
 describe('CreateTransactionRepository', () => {

@@ -1,5 +1,4 @@
 import { PostgresDeleteUserRepository } from './delete-user.js'
-import { faker } from '@faker-js/faker'
 import { user } from '../../../test'
 import { prisma } from '../../../../prisma/prisma.js'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'

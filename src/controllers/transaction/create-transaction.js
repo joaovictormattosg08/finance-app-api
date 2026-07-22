@@ -3,7 +3,6 @@ import { createTransactionSchema } from '../../schemas/transaction.js'
 import {
     serverError,
     badRequest,
-    sucess,
     created,
     userNotFoundResponse,
 } from '../helpers/index.js'

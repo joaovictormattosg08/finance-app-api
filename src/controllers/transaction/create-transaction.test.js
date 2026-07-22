@@ -184,7 +184,7 @@ describe('CreateTransactionController', () => {
         const { sut, createTransactionUseCase } = makeSut()
         const executeSpy = jest.spyOn(createTransactionUseCase, 'execute')
 
-        const result = await sut.execute(httpRequest)
+        await sut.execute(httpRequest)
 
         expect(executeSpy).toHaveBeenCalledWith(httpRequest.body)
     })

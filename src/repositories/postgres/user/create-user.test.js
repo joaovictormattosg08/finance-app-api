@@ -1,5 +1,4 @@
 import { PostgresCreateUserRepository } from './create-user'
-import { faker } from '@faker-js/faker'
 import { user } from '../../../test'
 import { prisma } from '../../../../prisma/prisma.js'
 
@@ -20,7 +19,7 @@ describe('CreateUserRepository', () => {
         const sut = new PostgresCreateUserRepository()
         const prismaSpy = jest.spyOn(prisma.user, 'create')
 
-        const result = await sut.execute(user)
+        await sut.execute(user)
 
         expect(prismaSpy).toHaveBeenCalledWith({
             data: user,

@@ -57,7 +57,7 @@ describe('GetUserBalanceUseCase', () => {
         const executeSpy = jest.spyOn(getUserByIdRepository, 'execute')
         const userId = faker.string.uuid()
 
-        const result = await sut.execute(userId)
+        await sut.execute(userId)
 
         expect(executeSpy).toHaveBeenCalledWith(userId)
     })
@@ -67,7 +67,7 @@ describe('GetUserBalanceUseCase', () => {
         const executeSpy = jest.spyOn(getUserBalanceRepository, 'execute')
         const userId = faker.string.uuid()
 
-        const result = await sut.execute(userId)
+        await sut.execute(userId)
 
         expect(executeSpy).toHaveBeenCalledWith(userId)
     })

@@ -1,7 +1,6 @@
 import { UserNotFoundError } from '../../errors/user'
 import { CreateTransactionUseCase } from './create-transaction'
-import { faker } from '@faker-js/faker'
-import { transaction, transactionParams, user } from '../../test/index'
+import { transactionParams, user } from '../../test/index'
 
 describe('CreateTransactionUseCase', () => {
     const createTransactionParams = {
@@ -62,7 +61,7 @@ describe('CreateTransactionUseCase', () => {
         const { sut, getUserByIdRepository } = makeSut()
         const executeSpy = jest.spyOn(getUserByIdRepository, 'execute')
 
-        const result = await sut.execute(createTransactionParams)
+        await sut.execute(createTransactionParams)
 
         expect(executeSpy).toHaveBeenCalledWith(createTransactionParams.user_id)
     })
@@ -71,7 +70,7 @@ describe('CreateTransactionUseCase', () => {
         const { sut, idGeneratorAdapter } = makeSut()
         const executeSpy = jest.spyOn(idGeneratorAdapter, 'execute')
 
-        const result = await sut.execute(createTransactionParams)
+        await sut.execute(createTransactionParams)
 
         expect(executeSpy).toHaveBeenCalled()
     })
@@ -80,7 +79,7 @@ describe('CreateTransactionUseCase', () => {
         const { sut, createTransactionRepository } = makeSut()
         const executeSpy = jest.spyOn(createTransactionRepository, 'execute')
 
-        const result = await sut.execute(createTransactionParams)
+        await sut.execute(createTransactionParams)
 
         expect(executeSpy).toHaveBeenCalledWith({
             ...createTransactionParams,

@@ -1,4 +1,3 @@
-import validator from 'validator'
 import { notFound } from './index.js'
 
 export const transactionNotFoundResponse = () => {

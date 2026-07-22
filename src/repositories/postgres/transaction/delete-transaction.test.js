@@ -42,7 +42,7 @@ describe('DeleteTransactionRepository', () => {
         const sut = new PostgresDeleteTransactionRepository()
         const prismaSpy = jest.spyOn(prisma.transaction, 'delete')
 
-        const result = await sut.execute(transactionParams.id)
+        await sut.execute(transactionParams.id)
 
         expect(prismaSpy).toHaveBeenCalledWith({
             where: { id: transactionParams.id },

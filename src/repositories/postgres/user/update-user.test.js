@@ -27,7 +27,7 @@ describe('UpdateUserRepository', () => {
         const prismaSpy = jest.spyOn(prisma.user, 'update')
         const sut = new PostgresUpdateUserRepository()
 
-        const result = await sut.execute(user.id, updateUserParams)
+        await sut.execute(user.id, updateUserParams)
 
         expect(prismaSpy).toHaveBeenCalledWith({
             where: {

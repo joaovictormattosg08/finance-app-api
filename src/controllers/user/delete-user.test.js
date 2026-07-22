@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { DeleteUserController } from './delete-user.js'
-import { transaction, user } from '../../test'
+import { user } from '../../test'
 import { UserNotFoundError } from '../../errors/user.js'
 
 describe('DeleteUserController', () => {
@@ -74,7 +74,7 @@ describe('DeleteUserController', () => {
         const { sut, deleteUserUseCase } = makeSut()
         const executeSpy = jest.spyOn(deleteUserUseCase, 'execute')
 
-        const result = await sut.execute(httpRequest)
+        await sut.execute(httpRequest)
 
         expect(executeSpy).toHaveBeenCalledWith(httpRequest.params.userId)
     })

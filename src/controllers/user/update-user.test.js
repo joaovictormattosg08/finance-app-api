@@ -132,7 +132,7 @@ describe('UpdateUserController', () => {
         const { sut, updateUserUseCase } = makeSut()
         const executeSpy = jest.spyOn(updateUserUseCase, 'execute')
 
-        const result = await sut.execute(httpRequest)
+        await sut.execute(httpRequest)
 
         expect(executeSpy).toHaveBeenCalledWith(
             httpRequest.params.userId,

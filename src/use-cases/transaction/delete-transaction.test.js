@@ -1,5 +1,4 @@
 import { DeleteTransactionUseCase } from './delete-transaction'
-import { faker } from '@faker-js/faker'
 import { transaction } from '../../test/index'
 
 describe('DeleteTransactionUseCase', () => {
@@ -33,7 +32,7 @@ describe('DeleteTransactionUseCase', () => {
         const { sut, deleteTransactionRepository } = makeSut()
         const executeSpy = jest.spyOn(deleteTransactionRepository, 'execute')
 
-        const result = await sut.execute(transaction)
+        await sut.execute(transaction)
 
         expect(executeSpy).toHaveBeenCalledWith(transaction)
     })

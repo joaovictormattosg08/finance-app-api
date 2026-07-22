@@ -1,9 +1,6 @@
-import { request } from 'express'
-import validator from 'validator'
 import {
     checkIfIdIsValid,
     invalidIdResponse,
-    badRequest,
     notFound,
     serverError,
     sucess,
@@ -16,8 +13,6 @@ export class GetUserByIdController {
 
     async execute(httpRequest) {
         try {
-            const params = httpRequest.body
-
             const isIdValid = checkIfIdIsValid(httpRequest.params.userId)
 
             if (!isIdValid) {
@@ -34,6 +29,7 @@ export class GetUserByIdController {
 
             return sucess(user)
         } catch (error) {
+            console.log(error)
             return serverError()
         }
     }

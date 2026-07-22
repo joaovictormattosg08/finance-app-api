@@ -14,8 +14,6 @@ export class DeleteTransactionController {
 
     async execute(httpRequest) {
         try {
-            const params = httpRequest.body
-
             const idIsValid = checkIfIdIsValid(httpRequest.params.transactionId)
 
             if (!idIsValid) {

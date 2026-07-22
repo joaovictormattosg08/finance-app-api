@@ -6,7 +6,7 @@ describe('UpdateTransactionUseCase', () => {
     const id = faker.string.uuid()
 
     class UpdateTransactionRepositoryStub {
-        async execute(transactionId, params) {
+        async execute(transactionId) {
             return {
                 id: transactionId,
                 ...transaction,
@@ -38,7 +38,7 @@ describe('UpdateTransactionUseCase', () => {
         const { sut, updateTransactionRepository } = makeSut()
         const executeSpy = jest.spyOn(updateTransactionRepository, 'execute')
 
-        const result = await sut.execute(id, transaction)
+        await sut.execute(id, transaction)
 
         expect(executeSpy).toHaveBeenCalledWith(id, transaction)
     })

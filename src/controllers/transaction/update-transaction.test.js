@@ -110,7 +110,7 @@ describe('UpdateTransactionController', () => {
         const executeSpy = jest.spyOn(updateTransactionUseCase, 'execute')
 
         //act
-        const result = await sut.execute(httpRequest)
+        await sut.execute(httpRequest)
 
         //assert
         expect(executeSpy).toHaveBeenCalledWith(
