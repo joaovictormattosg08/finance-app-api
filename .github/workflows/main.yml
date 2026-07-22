@@ -3,7 +3,7 @@ name: Deploy
 on:
     push:
         branches:
-           - main
+            - main
 
 jobs:
     check:
@@ -17,6 +17,9 @@ jobs:
               uses: actions/setup-node@v2
               with:
                   node-version: '20'
+
+            - name: Install dependencies
+              run: npm install
 
             - name: Eslint
               run: npm run eslint:check
