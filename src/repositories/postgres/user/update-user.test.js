@@ -24,7 +24,7 @@ describe('UpdateUserRepository', () => {
 
     it('should call prisma with correct params', async () => {
         const user = await prisma.user.create({ data: fakeUser })
-        const prismaSpy = jest.spyOn(prisma.user, 'update')
+        const prismaSpy = import.meta.jest.spyOn(prisma.user, 'update')
         const sut = new PostgresUpdateUserRepository()
 
         await sut.execute(user.id, updateUserParams)
@@ -39,7 +39,9 @@ describe('UpdateUserRepository', () => {
 
     it('should throw if Prisma throws', async () => {
         const sut = new PostgresUpdateUserRepository()
-        jest.spyOn(prisma.user, 'update').mockRejectedValueOnce(new Error())
+        import.meta.jest
+            .spyOn(prisma.user, 'update')
+            .mockRejectedValueOnce(new Error())
 
         const promise = sut.execute(fakeUser.id)
 

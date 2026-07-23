@@ -1,11 +1,12 @@
 import { faker } from '@faker-js/faker'
 import { CreateTransactionController } from './create-transaction.js'
-import { transaction } from '../../test'
+import { transactionParams } from '../../test/fixtures/transaction.js'
+import { TransactionType } from '@prisma/client'
 
 describe('CreateTransactionController', () => {
     class CreateTransactionUseCaseStub {
         async execute() {
-            return transaction
+            return transactionParams
         }
     }
 
@@ -22,7 +23,7 @@ describe('CreateTransactionController', () => {
             user_id: faker.string.uuid(),
             date: faker.date.anytime().toISOString(),
             amount: Number(faker.finance.amount()),
-            type: 'EARNING',
+            type: TransactionType.EARNING,
         },
     }
 
@@ -171,9 +172,9 @@ describe('CreateTransactionController', () => {
 
     it('should return 500 if CreateTransactionUseCase throws', async () => {
         const { sut, createTransactionUseCase } = makeSut()
-        jest.spyOn(createTransactionUseCase, 'execute').mockRejectedValueOnce(
-            new Error(),
-        )
+        import.meta.jest
+            .spyOn(createTransactionUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
 
         const result = await sut.execute(httpRequest)
 
@@ -182,7 +183,10 @@ describe('CreateTransactionController', () => {
 
     it('should calls CreateTransactionUseCase with correct params', async () => {
         const { sut, createTransactionUseCase } = makeSut()
-        const executeSpy = jest.spyOn(createTransactionUseCase, 'execute')
+        const executeSpy = import.meta.jest.spyOn(
+            createTransactionUseCase,
+            'execute',
+        )
 
         await sut.execute(httpRequest)
 

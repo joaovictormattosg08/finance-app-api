@@ -1,10 +1,10 @@
 import { DeleteTransactionUseCase } from './delete-transaction'
-import { transaction } from '../../test/index'
+import { transactionParams } from '../../test/index'
 
 describe('DeleteTransactionUseCase', () => {
     class DeleteTransactionRepositoryStub {
         async execute() {
-            return transaction
+            return transactionParams
         }
     }
 
@@ -23,28 +23,30 @@ describe('DeleteTransactionUseCase', () => {
     it('should delete transaction successfully', async () => {
         const { sut } = makeSut()
 
-        const result = await sut.execute(transaction)
+        const result = await sut.execute(transactionParams)
 
-        expect(result).toEqual(transaction)
+        expect(result).toEqual(transactionParams)
     })
 
     it('should call DeleteTransactionRepository with correct params', async () => {
         const { sut, deleteTransactionRepository } = makeSut()
-        const executeSpy = jest.spyOn(deleteTransactionRepository, 'execute')
+        const executeSpy = import.meta.jest.spyOn(
+            deleteTransactionRepository,
+            'execute',
+        )
 
-        await sut.execute(transaction)
+        await sut.execute(transactionParams)
 
-        expect(executeSpy).toHaveBeenCalledWith(transaction)
+        expect(executeSpy).toHaveBeenCalledWith(transactionParams)
     })
 
     it('should throw if DeleteTransactionRepository throws', async () => {
         const { sut, deleteTransactionRepository } = makeSut()
-        jest.spyOn(
-            deleteTransactionRepository,
-            'execute',
-        ).mockRejectedValueOnce(new Error())
+        import.meta.jest
+            .spyOn(deleteTransactionRepository, 'execute')
+            .mockRejectedValueOnce(new Error())
 
-        const promise = sut.execute(transaction)
+        const promise = sut.execute(transactionParams)
 
         await expect(promise).rejects.toThrow()
     })

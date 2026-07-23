@@ -1,13 +1,13 @@
 import { faker } from '@faker-js/faker'
 import { DeleteTransactionController } from './delete-transaction'
-import { transaction } from '../../test'
+import { transactionParams } from '../../test/fixtures/transaction'
 import { TransactionNotFoundError } from '../../errors/transaction'
 
 describe('DeleteTransactionController', () => {
     class DeleteTransactionUseCaseStub {
         async execute() {
             return {
-                transaction,
+                transactionParams,
             }
         }
     }
@@ -47,9 +47,9 @@ describe('DeleteTransactionController', () => {
 
     it('should return 404 when transaction is not found', async () => {
         const { sut, deleteTransactionUseCase } = makeSut()
-        jest.spyOn(deleteTransactionUseCase, 'execute').mockRejectedValueOnce(
-            new TransactionNotFoundError(),
-        )
+        import.meta.jest
+            .spyOn(deleteTransactionUseCase, 'execute')
+            .mockRejectedValueOnce(new TransactionNotFoundError())
 
         const result = await sut.execute(httpRequest)
 
@@ -58,9 +58,9 @@ describe('DeleteTransactionController', () => {
 
     it('should return 500 if DeleteTransactionUseCase throws', async () => {
         const { sut, deleteTransactionUseCase } = makeSut()
-        jest.spyOn(deleteTransactionUseCase, 'execute').mockRejectedValueOnce(
-            new Error(),
-        )
+        import.meta.jest
+            .spyOn(deleteTransactionUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
 
         const result = await sut.execute(httpRequest)
 
@@ -69,7 +69,10 @@ describe('DeleteTransactionController', () => {
 
     it('should call DeleteTransactionUseCase with correct params', async () => {
         const { sut, deleteTransactionUseCase } = makeSut()
-        const executeSpy = jest.spyOn(deleteTransactionUseCase, 'execute')
+        const executeSpy = import.meta.jest.spyOn(
+            deleteTransactionUseCase,
+            'execute',
+        )
 
         await sut.execute(httpRequest)
 

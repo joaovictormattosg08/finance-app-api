@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker'
 import { UpdateTransactionController } from './update-transaction'
-import { transaction } from '../../test'
+import { transactionParams } from '../../test'
 
 describe('UpdateTransactionController', () => {
     class UpdateTransactionUseCaseStub {
         async execute() {
             return {
-                transaction,
+                transactionParams,
             }
         }
     }
@@ -94,9 +94,9 @@ describe('UpdateTransactionController', () => {
 
     it('should return 500 if UpdateTransactionUseCase throws', async () => {
         const { sut, updateTransactionUseCase } = makeSut()
-        jest.spyOn(updateTransactionUseCase, 'execute').mockRejectedValueOnce(
-            new Error(),
-        )
+        import.meta.jest
+            .spyOn(updateTransactionUseCase, 'execute')
+            .mockRejectedValueOnce(new Error())
 
         const result = await sut.execute(httpRequest)
 
@@ -107,7 +107,10 @@ describe('UpdateTransactionController', () => {
         // arrange
         const { sut, updateTransactionUseCase } = makeSut()
 
-        const executeSpy = jest.spyOn(updateTransactionUseCase, 'execute')
+        const executeSpy = import.meta.jest.spyOn(
+            updateTransactionUseCase,
+            'execute',
+        )
 
         //act
         await sut.execute(httpRequest)
