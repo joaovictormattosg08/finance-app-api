@@ -3,7 +3,6 @@ import { app } from '../app.js'
 import { user } from '../test/fixtures/user.js'
 import { transactionParams } from '../test/fixtures/transaction.js'
 import { faker } from '@faker-js/faker'
-import { TransactionType } from '@prisma/client'
 
 describe('Transaction Routes E2E Tests', () => {
     it('POST /api/transactions should return 201 when creating a transaction successfully', async () => {

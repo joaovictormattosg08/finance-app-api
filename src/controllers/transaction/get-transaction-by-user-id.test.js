@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { GetTransactionByUserIdController } from './get-transaction-by-user-id'
 import { UserNotFoundError } from '../../errors/user'
-import { transactionParams } from '../../test'
 
 describe('GetTransactionByUserIdController', () => {
     class GetTransactionByUserIdUseCaseStub {
