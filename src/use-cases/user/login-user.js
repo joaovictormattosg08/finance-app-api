@@ -1,5 +1,4 @@
 import { InvalidPasswordError, UserNotFoundError } from '../../errors/user.js'
-import jwt from 'jsonwebtoken'
 
 export class LoginUserUseCase {
     constructor(
