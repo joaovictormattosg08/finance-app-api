@@ -31,3 +31,13 @@ export const createUserSchema = z.object({
 export const updateUserSchema = createUserSchema.partial().strict({
     message: 'Some provided field is not allowed',
 })
+
+export const loginUserSchema = z.object({
+    email: z.string().email().trim().min(1, {
+        message: 'E-mail is required',
+    }),
+
+    password: z.string().trim().min(6, {
+        message: 'Password must have at least 6 characters',
+    }),
+})
