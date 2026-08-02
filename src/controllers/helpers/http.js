@@ -14,6 +14,15 @@ export const serverError = () => {
     }
 }
 
+export const unauthorized = () => {
+    return {
+        statusCode: 401,
+        body: {
+            message: unauthorized,
+        },
+    }
+}
+
 export const created = (body) => {
     return {
         statusCode: 201,
