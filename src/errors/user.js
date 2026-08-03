@@ -19,6 +19,13 @@ export class InvalidPasswordError extends Error {
     }
 }
 
+export class UnauthorizedError extends Error {
+    constructor() {
+        super(`Unauthorized User`)
+        this.name = 'UnauthorizedError'
+    }
+}
+
 export class ForbiddenError extends Error {
     constructor() {
         super(`Forbidden`)
