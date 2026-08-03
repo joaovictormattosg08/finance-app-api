@@ -132,10 +132,10 @@ export const makeLoginUserController = () => {
 
 export const makeRefreshTokenController = () => {
     const tokensGeneratorAdapter = new TokenGeneratorAdapter()
-    const tokenVerifierAdapter = new TokenVerifierAdapter()
+    const TokenVerifierAdapter = new tokenVerifierAdapter()
     const refreshTokenUseCase = new RefreshTokenUseCase(
         tokensGeneratorAdapter,
-        tokenVerifierAdapter,
+        TokenVerifierAdapter,
     )
     const refreshTokenController = new RefreshTokenController(
         refreshTokenUseCase,

@@ -12,10 +12,17 @@ export class RefreshTokenUseCase {
                 refreshToken,
                 process.env.JWT_REFRESH_TOKEN_SECRET,
             )
+            console.log(decodedToken)
             if (!decodedToken) {
                 throw new UnauthorizedError()
             }
-            return this.tokensGeneratorAdapter.execute(decodedToken.userId)
+            const tokens = this.tokensGeneratorAdapter.execute(
+                decodedToken.userId,
+            )
+
+            console.log('tokens:', tokens)
+
+            return tokens
         } catch (error) {
             console.error(error)
             throw new UnauthorizedError()
