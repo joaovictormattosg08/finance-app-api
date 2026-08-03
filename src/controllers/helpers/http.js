@@ -18,7 +18,16 @@ export const unauthorized = () => {
     return {
         statusCode: 401,
         body: {
-            message: unauthorized,
+            message: 'unauthorized',
+        },
+    }
+}
+
+export const forbidden = () => {
+    return {
+        statusCode: 403,
+        body: {
+            message: 'forbidden',
         },
     }
 }

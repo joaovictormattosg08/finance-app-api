@@ -6,8 +6,11 @@ import {
     badRequest,
     sucess,
     transactionNotFoundResponse,
+    unauthorized,
+    forbidden,
 } from '../helpers/index.js'
 import { TransactionNotFoundError } from '../../errors/transaction.js'
+import { ForbiddenError } from '../../errors/user.js'
 import { ZodError } from 'zod'
 
 export class UpdateTransactionController {
@@ -34,6 +37,7 @@ export class UpdateTransactionController {
 
             return sucess(transaction)
         } catch (error) {
+            console.error(error)
             if (error instanceof ZodError) {
                 return badRequest({
                     message: error.issues[0].message,
@@ -44,7 +48,10 @@ export class UpdateTransactionController {
                 return transactionNotFoundResponse()
             }
 
-            console.error(error)
+            if (error instanceof ForbiddenError) {
+                return forbidden()
+            }
+
             return serverError()
         }
     }
