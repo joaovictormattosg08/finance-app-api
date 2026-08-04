@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 export class tokenVerifierAdapter {
-     execute(token, secret) {
+    execute(token, secret) {
         return jwt.verify(token, secret)
     }
 }

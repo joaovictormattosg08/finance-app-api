@@ -15,8 +15,7 @@ describe('UpdateTransactionUseCase', () => {
     }
 
     class GetTransactionByIdStub {
-        async execute(transactionId) {
-            return
+        async execute() {
             return transactionParams
         }
     }

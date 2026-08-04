@@ -6,7 +6,6 @@ import {
     badRequest,
     sucess,
     transactionNotFoundResponse,
-    unauthorized,
     forbidden,
 } from '../helpers/index.js'
 import { TransactionNotFoundError } from '../../errors/transaction.js'

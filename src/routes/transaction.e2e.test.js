@@ -5,9 +5,6 @@ import { user } from '../test/fixtures/user.js'
 import { TransactionType } from '@prisma/client'
 
 describe('Transaction Routes E2E Tests', () => {
-    const from = '2024-01-01'
-    const to = '2024-01-31'
-
     // it('POST /api/transactions/me should return 201 when creating a transaction successfully', async () => {
     //     const { body: createdUser } = await request(app)
     //         .post('/api/users')
