@@ -5,8 +5,8 @@ import { user } from '../../test/index'
 
 describe('GetTransactionByUserIdUseCase', () => {
     class GetTransactionByUserIdRepositoryStub {
-        async execute() {
-            return []
+        async execute(params) {
+            return params
         }
     }
 
@@ -33,12 +33,20 @@ describe('GetTransactionByUserIdUseCase', () => {
         }
     }
 
+    const httpRequest = {
+        query: {
+            userId: faker.string.uuid(),
+            from: '2025-01-01',
+            to: '2025-02-01',
+        },
+    }
+
     it('should get transactions by user id successfully', async () => {
         const { sut } = makeSut()
 
-        const result = await sut.execute(faker.string.uuid())
+        const result = await sut.execute(httpRequest)
 
-        expect(result).toEqual([])
+        expect(result).toEqual(httpRequest)
     })
 
     it('should throw UserNotFoundError if user does not exist', async () => {
@@ -59,9 +67,11 @@ describe('GetTransactionByUserIdUseCase', () => {
             'execute',
         )
         const id = faker.string.uuid()
+        const from = '2025-01-01'
+        const to = '2025-02-01'
 
-        await sut.execute(id)
-        expect(executeSpy).toHaveBeenCalledWith(id)
+        await sut.execute(id, from, to)
+        expect(executeSpy).toHaveBeenCalledWith(id, from, to)
     })
 
     it('should call GetUserbyIdRepository with correct params', async () => {
@@ -70,6 +80,7 @@ describe('GetTransactionByUserIdUseCase', () => {
             getUserByIdRepository,
             'execute',
         )
+
         const id = faker.string.uuid()
 
         await sut.execute(id)
