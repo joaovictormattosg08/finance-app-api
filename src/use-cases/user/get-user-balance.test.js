@@ -22,6 +22,9 @@ describe('GetUserBalanceUseCase', () => {
         }
     }
 
+    const from = '2024-01-01'
+    const to = '2025-01-01'
+
     const makeSut = () => {
         const getUserBalanceRepository = new GetUserBalanceRepositoryStub()
         const getUserByIdRepository = new GetUserByIdRepositoryStub()
@@ -75,9 +78,9 @@ describe('GetUserBalanceUseCase', () => {
         )
         const userId = faker.string.uuid()
 
-        await sut.execute(userId)
+        await sut.execute(userId, from, to)
 
-        expect(executeSpy).toHaveBeenCalledWith(userId)
+        expect(executeSpy).toHaveBeenCalledWith(userId, from, to)
     })
 
     it('should throw if GetUserByIdRepository throws', async () => {
