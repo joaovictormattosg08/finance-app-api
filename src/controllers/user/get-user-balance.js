@@ -2,8 +2,6 @@ import { ZodError } from 'zod'
 import { UserNotFoundError } from '../../errors/user.js'
 import { getUserBalanceSchema } from '../../schemas/user.js'
 import {
-    checkIfIdIsValid,
-    invalidIdResponse,
     serverError,
     sucess,
     userNotFoundResponse,
