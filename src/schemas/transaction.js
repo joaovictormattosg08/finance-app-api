@@ -35,3 +35,9 @@ export const updateTransactionSchema = createTransactionSchema
         user_id: true,
     })
     .partial()
+
+export const getTransactionByUserIdSchema = z.object({
+    user_id: z.string().uuid(),
+    from: z.string().date(),
+    to: z.string().date(),
+})
