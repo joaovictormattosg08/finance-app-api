@@ -91,8 +91,14 @@ describe('GetTransactionByUserIdController', () => {
             'execute',
         )
 
-        await sut.execute(httpRequest)
+        const userId = faker.string.uuid()
+        const from = '2025-01-01'
+        const to = '2025-02-01'
 
-        expect(executeSpy).toHaveBeenCalledWith(httpRequest.query.userId)
+        await sut.execute({
+            query: { userId: userId, from, to },
+        })
+
+        expect(executeSpy).toHaveBeenCalledWith(userId, from, to)
     })
 })
