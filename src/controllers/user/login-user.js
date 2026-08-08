@@ -29,7 +29,7 @@ export class LoginUserController {
         } catch (error) {
             if (error instanceof ZodError) {
                 return badRequest({
-                    message: error.erros[0].message,
+                    message: error.issues[0].message,
                 })
             }
 
