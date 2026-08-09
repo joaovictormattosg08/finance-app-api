@@ -104,7 +104,7 @@ describe('User Routes E2E Tests', () => {
                 name: faker.commerce.productName(),
                 date: new Date(from),
                 type: TransactionType.EXPENSE,
-                amount: 3000,
+                amount: 2000,
             })
 
         await request(app)
@@ -115,7 +115,7 @@ describe('User Routes E2E Tests', () => {
                 name: faker.commerce.productName(),
                 date: new Date(from),
                 type: TransactionType.INVESTMENT,
-                amount: 1000,
+                amount: 2000,
             })
         const response = await request(app)
             .get(`/api/users/balance?from=${from}&to=${to}`)
@@ -124,9 +124,12 @@ describe('User Routes E2E Tests', () => {
         expect(response.status).toBe(200)
         expect(response.body).toEqual({
             earnings: '10000',
-            expenses: '3000',
-            investments: '1000',
+            expenses: '2000',
+            investments: '2000',
             balance: '6000',
+            earningsPercentage: '71',
+            expensesPercentage: '14',
+            investmentsPercentage: '14',
         })
     })
 
