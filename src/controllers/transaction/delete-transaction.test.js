@@ -23,6 +23,7 @@ describe('DeleteTransactionController', () => {
     const httpRequest = {
         params: {
             transactionId: faker.string.uuid(),
+            user_id: faker.string.uuid(),
         },
     }
 
@@ -40,6 +41,7 @@ describe('DeleteTransactionController', () => {
         const result = await sut.execute({
             params: {
                 transactionId: 'invalid_id',
+                user_id: 'invalid',
             },
         })
 
@@ -77,7 +79,7 @@ describe('DeleteTransactionController', () => {
 
         const userId = faker.string.uuid()
 
-        await sut.execute(httpRequest, userId)
+        await sut.execute(httpRequest)
 
         expect(executeSpy).toHaveBeenCalledWith(
             httpRequest.params.transactionId,
