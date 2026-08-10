@@ -5,98 +5,109 @@ import { user } from '../test/fixtures/user.js'
 import { TransactionType } from '@prisma/client'
 
 describe('Transaction Routes E2E Tests', () => {
-    // it('POST /api/transactions/me should return 201 when creating a transaction successfully', async () => {
-    //     const { body: createdUser } = await request(app)
-    //         .post('/api/users')
-    //         .send({
-    //             ...user,
-    //             id: undefined,
-    //         })
+    const from = '2024-01-01'
+    const to = '2024-01-31'
 
-    //     const response = await request(app)
-    //         .post('/api/transactions/me')
-    //         .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
-    //         .send({
-    //             ...transactionParams,
-    //             user_id: createdUser.id,
-    //             id: undefined,
-    //         })
+    it('POST /api/transactions/me should return 201 when creating a transaction successfully', async () => {
+        const { body: createdUser } = await request(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+            })
 
-    //     expect(response.status).toBe(201)
-    //     expect(response.body.user_id).toBe(createdUser.id)
-    //     expect(response.body.type).toBe(transaction.type)
-    //     expect(response.body.amount).toBe(String(transaction.amount))
-    // })
+        const response = await request(app)
+            .post('/api/transactions/me')
+            .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+            .send({
+                ...transactionParams,
+                user_id: createdUser.id,
+                id: undefined,
+            })
 
-    // it('GET /api/transaction?userId should return 200 when fetching transactions successfully', async () => {
-    //     const { body: createdUser } = await request(app)
-    //         .post('/api/users')
-    //         .send({
-    //             ...user,
-    //             id: undefined,
-    //         })
+        expect(response.status).toBe(201)
+        expect(response.body.user_id).toBe(createdUser.id)
+        expect(response.body.type).toBe(transactionParams.type)
+        expect(response.body.amount).toBe(String(transactionParams.amount))
+    })
 
-    //     const { body: createdTransaction } = await request(app)
-    //         .post('/api/transactions/me')
-    //         .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
-    //         .send({
-    //             transactionParams,
-    //             date: new Date(from),
-    //             user_id: createdUser.id,
-    //             id: undefined,
-    //         })
+    it('GET /api/transaction?userId should return 200 when fetching transactions successfully', async () => {
+        const { body: createdUser } = await request(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+            })
 
-    //     const response = await request(app)
-    //         .get(`/api/transactions/me?from=${from}&to=${to}`)
-    //         .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+        const { body: createdTransaction } = await request(app)
+            .post('/api/transactions/me')
+            .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+            .send({
+                ...transactionParams,
+                date: new Date(from),
+                user_id: createdUser.id,
+                id: undefined,
+            })
 
-    //     expect(response.status).toBe(200)
-    //     expect(response.body[0].id).toBe(createdTransaction.id)
-    // })
+        const response = await request(app)
+            .get(`/api/transactions/me?from=${from}&to=${to}`)
+            .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
 
-    // it('PATCH /api/transactions/me/:transactionId should return 200 when updating a transaction successfully', async () => {
-    //     const { body: createdUser } = await request(app)
-    //         .post('/api/users')
-    //         .send({
-    //             ...user,
-    //             id: undefined,
-    //         })
+        expect(response.status).toBe(200)
+        expect(response.body[0].id).toBe(createdTransaction.id)
+    })
 
-    //     const { body: createdTransaction } = await request(app)
-    //         .post('/api/transactions/me')
-    //         .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
-    //         .send({ transactionParams, user_id: createdUser.id, id: undefined })
+    it('PATCH /api/transactions/me/:transactionId should return 200 when updating a transaction successfully', async () => {
+        const { body: createdUser } = await request(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+            })
 
-    //     const response = await request(app)
-    //         .patch(`/api/transactions/me/${createdTransaction.id}`)
-    //         .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
-    //         .send({ amount: 100, type: TransactionType.INVESTMENT })
+        const { body: createdTransaction } = await request(app)
+            .post('/api/transactions/me')
+            .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+            .send({
+                ...transactionParams,
+                user_id: createdUser.id,
+                id: undefined,
+            })
 
-    //     expect(response.status).toBe(200)
-    //     expect(response.body.amount).toBe('100')
-    //     expect(response.body.type).toBe(TransactionType.INVESTMENT)
-    // })
+        const response = await request(app)
+            .patch(`/api/transactions/me/${createdTransaction.id}`)
+            .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+            .send({ amount: 100, type: TransactionType.INVESTMENT })
 
-    // it('DELETE /api/transactions/:transactionId should return 200 when deleting a transaction successfully', async () => {
-    //     const { body: createdUser } = await request(app)
-    //         .post('/api/users')
-    //         .send({
-    //             ...user,
-    //             id: undefined,
-    //         })
+        expect(response.status).toBe(200)
+        expect(response.body.amount).toBe('100')
+        expect(response.body.type).toBe(TransactionType.INVESTMENT)
+    })
 
-    //     const { body: createdTransaction } = await request(app)
-    //         .post('/api/transactions/me')
-    //         .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
-    //         .send({ transactionParams, user_id: createdUser.id, id: undefined })
+    it('DELETE /api/transactions/:transactionId should return 200 when deleting a transaction successfully', async () => {
+        const { body: createdUser } = await request(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+            })
 
-    //     const response = await request(app)
-    //         .delete(`/api/transactions/me/${createdTransaction.id}`)
-    //         .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+        const { body: createdTransaction } = await request(app)
+            .post('/api/transactions/me')
+            .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+            .send({
+                ...transactionParams,
+                user_id: createdUser.id,
+                id: undefined,
+            })
 
-    //     expect(response.status).toBe(200)
-    //     expect(response.body.id).toBe(createdTransaction.id)
-    // })
+        const response = await request(app)
+            .delete(`/api/transactions/me/${createdTransaction.id}`)
+            .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+
+        expect(response.status).toBe(200)
+        expect(response.body.id).toBe(createdTransaction.id)
+    })
 
     it('PATCH /api/transactions/:transactionId should return 404 when updating a non-existing transaction', async () => {
         const { body: createdUser } = await request(app)
