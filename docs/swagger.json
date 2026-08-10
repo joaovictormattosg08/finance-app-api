@@ -53,7 +53,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/api/users/me": {
             "get": {
                 "tags": ["User"],
                 "summary": "Get authenticated user",
@@ -113,16 +115,9 @@
                 ]
             },
             "patch": {
-                "summary": "Update user by ID",
+                "summary": "Update authenticated user",
                 "tags": ["User"],
                 "parameters": [
-                    {
-                        "in": "path",
-                        "name": "userId",
-                        "required": true,
-                        "type": "string",
-                        "description": "ID of the user to update"
-                    },
                     {
                         "name": "body",
                         "required": true,
@@ -232,7 +227,7 @@
                 }
             }
         },
-        "/api/users/balance": {
+        "/api/users/me/balance": {
             "get": {
                 "summary": "Get authenticated user balance",
                 "tags": ["User"],
@@ -241,7 +236,7 @@
                         "name": "from",
                         "in": "query",
                         "required": true,
-                        "description": "Start date for the transaction query (fromat: YYYY-MM-DD)",
+                        "description": "Start date for the transactions query (format: YYYY-MM-DD)",
                         "schema": {
                             "type": "string",
                             "format": "date",
@@ -252,7 +247,7 @@
                         "name": "to",
                         "in": "query",
                         "required": true,
-                        "description": "End date for the transaction query (fromat: YYYY-MM-DD)",
+                        "description": "End date for the transactions query (format: YYYY-MM-DD)",
                         "schema": {
                             "type": "string",
                             "format": "date",
@@ -287,7 +282,7 @@
                 ]
             }
         },
-        "/api/transactions": {
+        "/api/transactions/me": {
             "get": {
                 "summary": "Get authenticated user transactions",
                 "tags": ["Transaction"],
@@ -296,7 +291,7 @@
                         "name": "from",
                         "in": "query",
                         "required": true,
-                        "description": "Start date for the transaction query (fromat: YYYY-MM-DD)",
+                        "description": "Start date for the transactions query (format: YYYY-MM-DD)",
                         "schema": {
                             "type": "string",
                             "format": "date",
@@ -307,7 +302,7 @@
                         "name": "to",
                         "in": "query",
                         "required": true,
-                        "description": "End date for the transaction query (fromat: YYYY-MM-DD)",
+                        "description": "End date for the transactions query (format: YYYY-MM-DD)",
                         "schema": {
                             "type": "string",
                             "format": "date",
@@ -390,9 +385,9 @@
                 ]
             }
         },
-        "/api/transactions/{transactionId}": {
+        "/api/transactions/me/{transactionId}": {
             "patch": {
-                "summary": "Update transaction by ID",
+                "summary": "Update transaction by ID of the authenticated user",
                 "tags": ["Transaction"],
                 "parameters": [
                     {
@@ -444,7 +439,7 @@
                 ]
             },
             "delete": {
-                "summary": "Delete transaction by ID",
+                "summary": "Delete transaction by ID of the authenticated user",
                 "tags": ["Transaction"],
                 "parameters": [
                     {
