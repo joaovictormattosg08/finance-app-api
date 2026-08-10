@@ -38,7 +38,7 @@ export class LoginUserController {
             }
 
             if (error instanceof UserNotFoundError) {
-                return notFound()
+                return notFound({ message: 'user not found' })
             }
 
             return serverError()
