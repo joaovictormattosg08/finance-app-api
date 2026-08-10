@@ -1,6 +1,8 @@
 import { TransactionNotFoundError } from '../../errors/transaction.js'
+import { ForbiddenError } from '../../errors/user.js'
 import {
     checkIfIdIsValid,
+    forbidden,
     invalidIdResponse,
     serverError,
     sucess,
@@ -31,6 +33,10 @@ export class DeleteTransactionController {
 
             return sucess(transaction)
         } catch (error) {
+            if (error instanceof ForbiddenError) {
+                return forbidden()
+            }
+
             if (error instanceof TransactionNotFoundError) {
                 return transactionNotFoundResponse()
             }

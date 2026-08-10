@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker'
 import { DeleteTransactionController } from './delete-transaction'
 import { transactionParams } from '../../test/fixtures/transaction'
 import { TransactionNotFoundError } from '../../errors/transaction'
-import { flattenError } from 'zod/v4/core'
 
 describe('DeleteTransactionController', () => {
     class DeleteTransactionUseCaseStub {
@@ -76,8 +75,6 @@ describe('DeleteTransactionController', () => {
             deleteTransactionUseCase,
             'execute',
         )
-
-        const userId = faker.string.uuid()
 
         await sut.execute(httpRequest)
 
